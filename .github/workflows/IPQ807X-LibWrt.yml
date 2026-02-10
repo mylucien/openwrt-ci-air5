@@ -79,10 +79,10 @@ jobs:
            $OPENWRT_PATH/target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/
         echo "设备树文件已复制"
 
-        echo "========== 追加设备定义 =========="
+        echo "========== 追加设备定义到 ipq807x.mk =========="
         cat $GITHUB_WORKSPACE/softbank-air5-firmware-files/target/linux/qualcommax/ipq807x/softbank-air5.mk >> \
-           $OPENWRT_PATH/target/linux/qualcommax/ipq807x/base-files.mk
-        echo "设备定义已追加"
+           $OPENWRT_PATH/target/linux/qualcommax/image/ipq807x.mk
+        echo "设备定义已追加到 ipq807x.mk"
 
         echo "========== 验证文件 =========="
         echo "检查 .config:"
@@ -91,8 +91,8 @@ jobs:
         echo "检查设备树:"
         ls -lh $OPENWRT_PATH/target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/ipq8072-softbank-air5.dts
         echo ""
-        echo "检查设备定义:"
-        grep -c "softbank_air5" $OPENWRT_PATH/target/linux/qualcommax/ipq807x/base-files.mk
+        echo "检查设备定义在 ipq807x.mk 中:"
+        grep -A 10 "Device/softbank_air5" $OPENWRT_PATH/target/linux/qualcommax/image/ipq807x.mk || echo "未找到设备定义！"
 
     - name: Generate Variables(生成变量)
       run: |
