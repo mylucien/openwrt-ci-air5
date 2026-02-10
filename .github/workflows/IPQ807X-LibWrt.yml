@@ -146,6 +146,16 @@ jobs:
         make defconfig
         make download -j$(nproc)
 
+    - name: Fix musl libc.so for mklibs
+      run: |
+        LIBDIR=staging_dir/target-aarch64_cortex-a53_musl/root-qualcommax/lib
+        if [ -e "$LIBDIR/libc.musl-aarch64.so.1" ] && [ ! -e "$LIBDIR/libc.so" ]; then
+            ln -sf libc.musl-aarch64.so.1 "$LIBDIR/libc.so"
+            echo "libc.so symlink created for mklibs"
+        else
+            echo "libc.so already exists or musl libc missing"
+        fi
+
     - name: Compile Firmware(开始编译固件)
       id: compile
       run: |
