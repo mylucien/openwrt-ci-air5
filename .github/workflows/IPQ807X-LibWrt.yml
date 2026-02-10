@@ -72,7 +72,6 @@ jobs:
 
         echo "========== 复制配置文件 =========="
         cp $CONFIG_FILE $OPENWRT_PATH/.config
-        #cp $GITHUB_WORKSPACE/softbank-air5-firmware-files/configs/softbank-air5.config $OPENWRT_PATH/.config
         echo "配置文件已复制"
 
         echo "========== 复制设备树文件 =========="
