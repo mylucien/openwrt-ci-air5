@@ -9,7 +9,8 @@ on:
 env:
   REPO_URL: https://github.com/LiBwrt/openwrt-6.x.git
   REPO_BRANCH: main-nss
-  CONFIG_FILE: air5-files.tar.gz
+  MAKE_FILE: air5-files.tar.gz
+  CONFIG_FILE: config/softbank-air5.config
   DIY_SCRIPT: scripts/Roc-script.sh
   CLASH_KERNEL: amd64
   UPLOAD_BIN_DIR: false
@@ -64,13 +65,14 @@ jobs:
     - name: Extract and Copy SoftBank Air5 Files(解压并复制 SoftBank Air5 文件)
       run: |
         echo "========== 解压 air5-files.tar.gz =========="
-        tar -xzf $CONFIG_FILE -C $GITHUB_WORKSPACE
+        tar -xzf $MAKE_FILE -C $GITHUB_WORKSPACE
 
         echo "========== 检查文件结构 =========="
         ls -la $GITHUB_WORKSPACE/softbank-air5-firmware-files/
 
         echo "========== 复制配置文件 =========="
-        cp $GITHUB_WORKSPACE/softbank-air5-firmware-files/configs/softbank-air5.config $OPENWRT_PATH/.config
+        cp $CONFIG_FILE $OPENWRT_PATH/.config
+        #cp $GITHUB_WORKSPACE/softbank-air5-firmware-files/configs/softbank-air5.config $OPENWRT_PATH/.config
         echo "配置文件已复制"
 
         echo "========== 复制设备树文件 =========="
