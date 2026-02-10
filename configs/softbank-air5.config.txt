@@ -1,0 +1,207 @@
+# SoftBank Air 5 (IPQ8072A) OpenWrt 配置文件
+# 基于 LiBwrt/openwrt-6.x 内核 6.12
+# 生成日期: 2025-02-10
+
+# ============================================
+# 目标平台配置
+# ============================================
+CONFIG_TARGET_qualcommax=y
+CONFIG_TARGET_qualcommax_ipq807x=y
+CONFIG_TARGET_qualcommax_ipq807x_DEVICE_softbank_air5=y
+
+# 系统配置
+CONFIG_TARGET_BOARD="qualcommax"
+CONFIG_TARGET_SUBTARGET="ipq807x"
+CONFIG_TARGET_PROFILE="DEVICE_softbank_air5"
+
+# ============================================
+# 内核配置
+# ============================================
+CONFIG_KERNEL_6_12=y
+CONFIG_LINUX_6_12=y
+CONFIG_KERNEL_SQUASHFS_LZMA=y
+
+# ============================================
+# Base System
+# ============================================
+CONFIG_PACKAGE_base-files=y
+CONFIG_PACKAGE_busybox=y
+CONFIG_PACKAGE_ca-bundle=y
+CONFIG_PACKAGE_dropbear=y
+CONFIG_PACKAGE_firewall4=y
+CONFIG_PACKAGE_nftables=y
+CONFIG_PACKAGE_kmod-nft-offload=y
+CONFIG_PACKAGE_dnsmasq=y
+CONFIG_PACKAGE_ip-full=y
+CONFIG_PACKAGE_iptables-nft=y
+CONFIG_PACKAGE_jshn=y
+CONFIG_PACKAGE_jsonfilter=y
+CONFIG_PACKAGE_logd=y
+CONFIG_PACKAGE_netifd=y
+CONFIG_PACKAGE_opkg=y
+CONFIG_PACKAGE_uci=y
+CONFIG_PACKAGE_uclient-fetch=y
+CONFIG_PACKAGE_urandom-seed=y
+CONFIG_PACKAGE_urngd=y
+
+# ============================================
+# LuCI Web Interface
+# ============================================
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_luci-ssl-openssl=y
+CONFIG_PACKAGE_luci-app-firewall=y
+CONFIG_PACKAGE_luci-app-opkg=y
+CONFIG_PACKAGE_luci-mod-admin-full=y
+CONFIG_PACKAGE_luci-mod-network=y
+CONFIG_PACKAGE_luci-mod-status=y
+CONFIG_PACKAGE_luci-mod-system=y
+CONFIG_PACKAGE_luci-theme-bootstrap=y
+CONFIG_PACKAGE_luci-proto-ipv6=y
+CONFIG_PACKAGE_luci-proto-ppp=y
+
+# ============================================
+# Network Protocols
+# ============================================
+CONFIG_PACKAGE_ppp=y
+CONFIG_PACKAGE_ppp-mod-pppoe=y
+
+# ============================================
+# Wireless Drivers - WiFi 6 (ath11k)
+# ============================================
+CONFIG_PACKAGE_kmod-ath11k=y
+CONFIG_PACKAGE_kmod-ath11k-ahb=y
+CONFIG_PACKAGE_kmod-ath11k-pci=y
+CONFIG_PACKAGE_ath11k-firmware-ipq8074=y
+
+# ============================================
+# Wireless Tools
+# ============================================
+CONFIG_PACKAGE_hostapd-common=y
+CONFIG_PACKAGE_wpad-mbedtls=y
+CONFIG_PACKAGE_iw=y
+CONFIG_PACKAGE_iwinfo=y
+# ============================================
+
+
+# ============================================
+# USB Support
+# ============================================
+CONFIG_PACKAGE_kmod-usb-core=y
+CONFIG_PACKAGE_kmod-usb3=y
+CONFIG_PACKAGE_kmod-usb-dwc3=y
+CONFIG_PACKAGE_kmod-usb-dwc3-qcom=y
+CONFIG_PACKAGE_kmod-usb-storage=y
+CONFIG_PACKAGE_kmod-usb-storage-uas=y
+
+# ============================================
+# 5G/LTE Modem Support (Qualcomm SDX55)
+# ============================================
+CONFIG_PACKAGE_kmod-usb-net=y
+CONFIG_PACKAGE_kmod-usb-net-cdc-ether=y
+CONFIG_PACKAGE_kmod-usb-net-cdc-mbim=y
+CONFIG_PACKAGE_kmod-usb-net-cdc-ncm=y
+CONFIG_PACKAGE_kmod-usb-net-qmi-wwan=y
+CONFIG_PACKAGE_kmod-usb-serial=y
+CONFIG_PACKAGE_kmod-usb-serial-option=y
+CONFIG_PACKAGE_kmod-usb-serial-wwan=y
+CONFIG_PACKAGE_kmod-usb-serial-qualcomm=y
+
+# ============================================
+# QMI Utilities
+# ============================================
+CONFIG_PACKAGE_uqmi=y
+CONFIG_PACKAGE_umbim=y
+
+# ============================================
+# LuCI QMI/LTE Apps
+# ============================================
+CONFIG_PACKAGE_luci-proto-qmi=y
+CONFIG_PACKAGE_luci-proto-mbim=y
+CONFIG_PACKAGE_luci-proto-ncm=y
+
+# ============================================
+# PCIe Support
+# ============================================
+CONFIG_PACKAGE_kmod-pci-core=y
+CONFIG_PACKAGE_kmod-qcom-pcie=y
+
+# ============================================
+# Utilities
+# ============================================
+CONFIG_PACKAGE_htop=y
+CONFIG_PACKAGE_wget-ssl=y
+CONFIG_PACKAGE_curl=y
+CONFIG_PACKAGE_tcpdump=y
+CONFIG_PACKAGE_iperf3=y
+CONFIG_PACKAGE_ethtool=y
+CONFIG_PACKAGE_usbutils=y
+CONFIG_PACKAGE_pciutils=y
+
+# ============================================
+# Firmware
+# ============================================
+CONFIG_PACKAGE_kmod-firmware-class=y
+
+# ============================================
+# NSS (Network Subsystem) Support
+# ============================================
+CONFIG_PACKAGE_kmod-qca-nss-dp=y
+CONFIG_PACKAGE_kmod-qca-ssdk=y
+CONFIG_PACKAGE_qca-ssdk-shell=y
+CONFIG_PACKAGE_kmod-qca-nss-drv=y
+CONFIG_PACKAGE_kmod-qca-nss-drv-pppoe=y
+CONFIG_PACKAGE_kmod-qca-nss-ecm=y
+CONFIG_PACKAGE_qca-nss-fw2-retail=y
+
+# ============================================
+# Additional Features
+# ============================================
+CONFIG_PACKAGE_kmod-crypto-hw-qce=y
+CONFIG_PACKAGE_kmod-crypto-sha256=y
+CONFIG_PACKAGE_kmod-crypto-sha512=y
+CONFIG_PACKAGE_kmod-random-core=y
+
+# ============================================
+# Filesystem Support
+# ============================================
+CONFIG_PACKAGE_kmod-fs-ext4=y
+CONFIG_PACKAGE_kmod-fs-vfat=y
+CONFIG_PACKAGE_kmod-nls-cp437=y
+CONFIG_PACKAGE_kmod-nls-iso8859-1=y
+CONFIG_PACKAGE_kmod-nls-utf8=y
+
+# ============================================
+# LED Support
+# ============================================
+CONFIG_PACKAGE_kmod-leds-gpio=y
+
+# ============================================
+# Image Options
+# ============================================
+CONFIG_TARGET_KERNEL_PARTSIZE=12288
+# ============================================
+# Build Options
+# ============================================
+CONFIG_DEVEL=y
+CONFIG_CCACHE=y
+CONFIG_BUILD_LOG=y
+CONFIG_AUTOREMOVE=y
+
+# ============================================
+# IPv6 Support (Optional)
+# ============================================
+CONFIG_PACKAGE_ipv6helper=y
+CONFIG_PACKAGE_odhcp6c=y
+CONFIG_PACKAGE_odhcpd-ipv6only=y
+
+# ============================================
+# 基础系统配置
+# ============================================
+CONFIG_USE_SSTRIP=y
+CONFIG_USE_MKLIBS=y
+
+# ============================================
+# 其他配置
+# ============================================
+CONFIG_BUSYBOX_CUSTOM=y
+CONFIG_TARGET_PER_DEVICE_ROOTFS=y
