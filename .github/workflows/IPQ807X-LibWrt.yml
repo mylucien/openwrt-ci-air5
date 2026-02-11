@@ -9,7 +9,8 @@ on:
 env:
   REPO_URL: https://github.com/LiBwrt/openwrt-6.x.git
   REPO_BRANCH: main-nss
-  MAKE_FILE: air5-files.tar.gz
+  DTS_FILE: air5/ipq8072-softbank-air5.dts
+  MK_FILE: air5/softbank-air5.mk
   CONFIG_FILE: configs/softbank-air5.config
   DIY_SCRIPT: scripts/Roc-script.sh
   CLASH_KERNEL: amd64
@@ -64,24 +65,17 @@ jobs:
 
     - name: Extract and Copy SoftBank Air5 Files(解压并复制 SoftBank Air5 文件)
       run: |
-        echo "========== 解压 air5-files.tar.gz =========="
-        tar -xzf $MAKE_FILE -C $GITHUB_WORKSPACE
-
-        echo "========== 检查文件结构 =========="
-        ls -la $GITHUB_WORKSPACE/softbank-air5-firmware-files/
-
         echo "========== 复制配置文件 =========="
         cp $CONFIG_FILE $OPENWRT_PATH/.config
         echo "配置文件已复制"
 
         echo "========== 复制设备树文件 =========="
-        mkdir -p $OPENWRT_PATH/target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/
-        cp $GITHUB_WORKSPACE/softbank-air5-firmware-files/target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/ipq8072-softbank-air5.dts \
+        cp $DTS_FILE \
            $OPENWRT_PATH/target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/
         echo "设备树文件已复制"
 
         echo "========== 追加设备定义到 ipq807x.mk =========="
-        cat $GITHUB_WORKSPACE/softbank-air5-firmware-files/target/linux/qualcommax/ipq807x/softbank-air5.mk >> \
+        cat $MK_FILE >> \
            $OPENWRT_PATH/target/linux/qualcommax/image/ipq807x.mk
         echo "设备定义已追加到 ipq807x.mk"
 
