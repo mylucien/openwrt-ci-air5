@@ -62,6 +62,32 @@ jobs:
         VERSION_KERNEL=$(grep -oP 'LINUX_KERNEL_HASH-\K[0-9]+\.[0-9]+\.[0-9]+' target/linux/generic/kernel-6.12)
         echo "VERSION_KERNEL=$VERSION_KERNEL" >> $GITHUB_ENV
 
+    - name: Extract and Copy SoftBank Air5 Files(解压并复制 SoftBank Air5 文件)
+      run: |
+        echo "========== 复制配置文件 =========="
+        cp $CONFIG_FILE $OPENWRT_PATH/.config
+        echo "配置文件已复制"
+
+        echo "========== 复制设备树文件 =========="
+        cp $DTS_FILE \
+           $OPENWRT_PATH/target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/
+        echo "设备树文件已复制"
+
+        echo "========== 追加设备定义到 ipq807x.mk =========="
+        cat $MK_FILE >> \
+           $OPENWRT_PATH/target/linux/qualcommax/image/ipq807x.mk
+        echo "设备定义已追加到 ipq807x.mk"
+
+        echo "========== 验证文件 =========="
+        echo "检查 .config:"
+        ls -lh $OPENWRT_PATH/.config
+        echo ""
+        echo "检查设备树:"
+        ls -lh $OPENWRT_PATH/target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/ipq8072-softbank-air5.dts
+        echo ""
+        echo "检查设备定义在 ipq807x.mk 中:"
+        grep -A 10 "Device/softbank_air5" $OPENWRT_PATH/target/linux/qualcommax/image/ipq807x.mk || echo "未找到设备定义！"
+
     - name: Generate Variables(生成变量)
       run: |
         cp $CONFIG_FILE $OPENWRT_PATH/.config
