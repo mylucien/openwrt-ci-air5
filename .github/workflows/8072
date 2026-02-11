@@ -9,7 +9,9 @@ on:
 env:
   REPO_URL: https://github.com/laipeng668/openwrt-6.x.git
   REPO_BRANCH: main-nss
-  CONFIG_FILE: configs/IPQ807X.config
+  DTS_FILE: air5/ipq8072-softbank-air5.dts
+  MK_FILE: air5/softbank-air5.mk
+  CONFIG_FILE: configs/softbank-air5.config
   GENERAL_CONFIG_FILE: configs/General.config
   DIY_SCRIPT: scripts/Roc-script.sh
   CLASH_KERNEL: amd64
