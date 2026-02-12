@@ -398,35 +398,6 @@
 	status = "okay";
 };
 
-/* PCIe Gen2 PHY for 5G Module */
-&pcie_phy0 {
-	status = "okay";
-};
-
-/* PCIe Gen3 PHY for 5G Module */
-&pcie_phy1 {
-	status = "okay";
-};
-
-/* PCIe0 - Qualcomm SDX55 5G Modem */
-&pcie0 {
-	status = "okay";
-	perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>;
-	wake-gpios = <&tlmm 59 GPIO_ACTIVE_HIGH>;
-
-	bridge@0,0 {
-		reg = <0x00000000 0 0 0 0>;
-		#address-cells = <3>;
-		#size-cells = <2>;
-		ranges;
-	};
-};
-
-/* PCIe1 - Disabled (not used) */
-&pcie1 {
-	status = "disabled";
-};
-
 /* USB 3.0 PHYs */
 &ssphy_0 {
 	status = "okay";
