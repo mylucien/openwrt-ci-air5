@@ -13,7 +13,6 @@ define Device/softbank_air5
   BLOCKSIZE := 128k
   PAGESIZE := 2048
   KERNEL_SIZE := 12288k
-  DEVICE_PACKAGES := ath11k-firmware-ipq8074 kmod-ath11k-ahb kmod-ath11k-pci
   KERNEL := kernel-bin | gzip | fit gzip $$(KDIR)/image-$$(DEVICE_DTS).dtb
   IMAGES := sysupgrade.bin factory.bin
   IMAGE/sysupgrade.bin := append-kernel | pad-to 128k | append-rootfs | pad-rootfs | append-metadata
