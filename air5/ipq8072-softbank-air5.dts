@@ -395,7 +395,7 @@
 
 /* WiFi*/
 &wifi {
-	status = "okay";
+	status = "disabled";
 };
 
 /* USB 3.0 PHYs */
