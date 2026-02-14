@@ -165,20 +165,28 @@ jobs:
       if: steps.compile.outputs.status == 'success'
       run: |
         cd $OPENWRT_PATH/bin/targets/*/*
+
         cp $OPENWRT_PATH/.config IPQ807X.config
         mv config.buildinfo IPQ807X.config.buildinfo
-        mv libwrt-qualcommax-ipq807x.manifest IPQ807X.manifest
-        mv -f $OPENWRT_PATH/bin/packages/*/*/*.apk packages
+
+        # 自动匹配 manifest 文件（避免前缀变化出错）
+        mv *.manifest IPQ807X.manifest
+
+        # 处理 apk 包（不存在也不报错）
+        mkdir -p packages
+        mv -f $OPENWRT_PATH/bin/packages/*/*/*.apk packages/ 2>/dev/null || true
+
         tar -zcf IPQ807X.Packages.tar.gz packages
+
         rm -rf packages feeds.buildinfo version.buildinfo sha256sums profiles.json
+
         echo "FIRMWARE_PATH=$PWD" >> $GITHUB_ENV
 
     - name: Upload Firmware To Artifact(将固件上传到Artifact)
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE != 'true'
       uses: actions/upload-artifact@main
       with:
-        name: ${{ env.SOURCE_REPO }}-firmware-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
-        path: ${{ env.FIRMWARE_PATH }}
+        name: ${{ env.SOURCE_REPO }}-firmware-${{ env.DEVICE_TARGET }}-${{ env.DEVI
 
     - name: Upload Firmware To Release(发布固件)
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
