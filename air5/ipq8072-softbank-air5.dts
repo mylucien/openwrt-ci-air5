@@ -402,14 +402,6 @@
 	status = "disabled";
 };
 
-&pcie2 {
-	status = "disabled";
-};
-
-&pcie3 {
-	status = "disabled";
-};
-
 &qusb_phy_0 {
 	status = "disabled";
 };
