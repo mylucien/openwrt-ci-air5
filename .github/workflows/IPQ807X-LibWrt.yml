@@ -121,6 +121,14 @@ jobs:
           done
         fi
 
+    - name: Refresh The Cache(刷新缓存)
+      run: |
+        if [ -d "$OPENWRT_PATH/staging_dir" ]; then
+          find "$OPENWRT_PATH/staging_dir" -type d -name "stamp" -not -path "*target*" | while read -r dir; do
+              find "$dir" -type f -exec touch {} +
+          done
+        fi
+
     - name: Install Feeds(安装feeds)
       run: |
         cd $OPENWRT_PATH
@@ -186,7 +194,8 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE != 'true'
       uses: actions/upload-artifact@main
       with:
-        name: ${{ env.SOURCE_REPO }}-firmware-${{ env.DEVICE_TARGET }}-${{ env.DEVI
+        name: ${{ env.SOURCE_REPO }}-firmware-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
+        path: ${{ env.FIRMWARE_PATH }}
 
     - name: Upload Firmware To Release(发布固件)
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE == 'true'
