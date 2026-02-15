@@ -396,14 +396,10 @@
 
 &pcie0 {
 	status = "okay";
-	perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>;
-	pinctrl-0 = <&pcie0_pins>;
-	pinctrl-names = "default";
 };
 
 &pcie1 {
 	status = "okay";
-	perst-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
 };
 
 &ssphy_0 {
