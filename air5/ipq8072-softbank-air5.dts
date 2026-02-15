@@ -395,37 +395,41 @@
 };
 
 &pcie0 {
-	status = "disabled";
+	status = "okay";
+	perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>;
+	pinctrl-0 = <&pcie0_pins>;
+	pinctrl-names = "default";
 };
 
 &pcie1 {
-	status = "disabled";
-};
-
-&qusb_phy_0 {
-	status = "disabled";
+	status = "okay";
+	perst-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
 };
 
 &ssphy_0 {
-	status = "disabled";
-};
-
-&qusb_phy_1 {
-	status = "disabled";
+	status = "okay";
 };
 
 &ssphy_1 {
-	status = "disabled";
+	status = "okay";
+};
+
+&qusb_phy_0 {
+	status = "okay";
+};
+
+&qusb_phy_1 {
+	status = "okay";
 };
 
 &usb_0 {
-	status = "disabled";
+	status = "okay";
 };
 
 &usb_1 {
-	status = "disabled";
+	status = "okay";
 };
 
 &prng {
-	status = "disabled";
+	status = "okay";
 };
