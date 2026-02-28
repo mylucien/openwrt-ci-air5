@@ -396,21 +396,21 @@
 	status = "okay";
 	phy-handle = <&qca8075_0>;
 	label = "lan1";
-	mac-address = [a8 98 92 2c f9 96];
+	mac-address = [a8 98 92 2c f9 96]; /* 填入你的实际MAC */
 };
 
 &dp2 {
 	status = "okay";
 	phy-handle = <&qca8075_1>;
 	label = "wan";
-	mac-address = [a8 98 92 2c f9 97];
+	mac-address = [a8 98 92 2c f9 97]; /* 填入你的实际MAC */
 };
 
 &wifi {
 	status = "okay";
 	nvmem-cells = <&cal_art_wifi0>, <&cal_art_wifi1>;
 	nvmem-cell-names = "calibration", "pre-calibration";
-	mac-address = [a8 98 92 2c f9 98];
+	mac-address = [a8 98 92 2c f9 98]; /* 填入你的实际MAC */
 };
 
 &pcie0 {
