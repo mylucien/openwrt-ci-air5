@@ -446,7 +446,3 @@
 &usb_1 {
 	status = "okay";
 };
-
-&prng {
-	status = "okay";
-};
