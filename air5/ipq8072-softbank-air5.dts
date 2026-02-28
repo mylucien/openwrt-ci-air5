@@ -394,7 +394,8 @@
 
 /* Disable unused peripherals */
 &wifi {
-	status = "disabled";
+    status = "disabled";
+    qcom,ath11k-calibration-variant = "SoftBank-Air5";
 };
 
 &pcie0 {
