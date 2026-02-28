@@ -141,20 +141,20 @@ jobs:
         cd $OPENWRT_PATH
         $GITHUB_WORKSPACE/$DIY_SCRIPT
 
+    - name: Fix gcc14 libubox format error
+      run: |
+        mkdir -p $OPENWRT_PATH/package/libs/libubox/patches
+        cp $GITHUB_WORKSPACE/patches/libubox/001-fix-format-nonliteral.patch \
+           $OPENWRT_PATH/package/libs/libubox/patches/
+        echo "Patch placed:"
+        ls -la $OPENWRT_PATH/package/libs/libubox/patches/
+
     - name: Download DL Package(下载DL软件包)
       run: |
         cat $CONFIG_FILE $GENERAL_CONFIG_FILE > $OPENWRT_PATH/.config
         cd $OPENWRT_PATH
         make defconfig
         make download -j$(nproc)
-
-    - name: Check libubox location
-      run: |
-        cd $OPENWRT_PATH
-        echo "=== package/libs/libubox 目录结构 ==="
-        ls -la package/libs/libubox/
-        echo "=== Makefile 内容 ==="
-        cat package/libs/libubox/Makefile
 
     - name: Compile Firmware(开始编译固件)
       id: compile
