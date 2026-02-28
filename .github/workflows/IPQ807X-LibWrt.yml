@@ -134,6 +134,14 @@ jobs:
         cd $OPENWRT_PATH
         ./scripts/feeds update -a
         ./scripts/feeds install -a
+
+    - name: Fix gcc14 libubox format error
+      run: |
+        cd $OPENWRT_PATH
+        # 修改源码包中的 CMakeLists.txt
+        sed -i 's/-Werror=format-nonliteral//g' package/libs/libubox/CMakeLists.txt
+        # 同时清理可能已存在的 build_dir，强制重新解压
+        rm -rf build_dir/target-*/libubox-*
   
     - name: Load Custom Configuration(加载自定义配置)
       run: |
@@ -147,12 +155,6 @@ jobs:
         cd $OPENWRT_PATH
         make defconfig
         make download -j$(nproc)
-        
-    - name: Fix gcc14 libubox format error
-      run: |
-        cd $OPENWRT_PATH
-        sed -i 's/-Werror=format-nonliteral//g' package/libs/libubox/CMakeLists.txt
-        sed -i 's/-Werror//g' package/libs/libubox/CMakeLists.txt
 
     - name: Compile Firmware(开始编译固件)
       id: compile
