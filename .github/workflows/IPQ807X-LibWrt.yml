@@ -14,7 +14,6 @@ env:
   CONFIG_FILE: configs/softbank-air5.config
   GENERAL_CONFIG_FILE: configs/General.config
   DIY_SCRIPT: scripts/Roc-script.sh
-  2_SCRIPT: scripts/2-script.sh
   CLASH_KERNEL: amd64
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
@@ -149,11 +148,10 @@ jobs:
         make defconfig
         make download -j$(nproc)
         
-    - name: SCRIPT(加载自定义脚本)
+    - name: Fix gcc14 build issue
       run: |
-        chmod +x $2_SCRIPT
-        cd $OPENWRT_PATH
-        $GITHUB_WORKSPACE/$2_SCRIPT
+        sed -i 's/-Werror=format-nonliteral/-Wno-error=format-nonliteral/g' package/libs/libubox/CMakeLists.txt || true
+        sed -i 's/-Werror//g' package/libs/libubox/CMakeLists.txt || true
 
     - name: Compile Firmware(开始编译固件)
       id: compile
