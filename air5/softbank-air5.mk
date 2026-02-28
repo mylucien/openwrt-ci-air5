@@ -10,8 +10,6 @@ define Device/softbank_air5
   SOC := ipq8072
   DEVICE_DTS := ipq8072-softbank-air5
   DEVICE_DTS_CONFIG := config@hk09
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
   KERNEL_SIZE := 12288k
   DEVICE_PACKAGES := kmod-usb3 kmod-usb-dwc3 kmod-usb-dwc3-qcom \
   		kmod-qca-nss-dp kmod-qca-ssdk qca-ssdk-shell \
