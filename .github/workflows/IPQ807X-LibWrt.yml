@@ -150,6 +150,7 @@ jobs:
         
     - name: Fix gcc14 build issue
       run: |
+        cd $OPENWRT_PATH
         sed -i 's/-Werror=format-nonliteral/-Wno-error=format-nonliteral/g' package/libs/libubox/CMakeLists.txt || true
         sed -i 's/-Werror//g' package/libs/libubox/CMakeLists.txt || true
 
