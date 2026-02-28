@@ -148,13 +148,17 @@ jobs:
         make defconfig
         make download -j$(nproc)
 
-    - name: Check libubox CMakeLists content
+    - name: Check libubox location
       run: |
         cd $OPENWRT_PATH
-        LIBUBOX_DIR=$(find feeds -type d -name "libubox" | head -1)
-        echo "dir: $LIBUBOX_DIR"
-        find feeds -maxdepth 3 -type d | grep -i ubox
-        ls "$LIBUBOX_DIR/" 2>/dev/null
+        echo "=== 所有包含 libubox 字样的目录 ==="
+        find . -type d -name "*libubox*" 2>/dev/null
+        echo "=== package 目录下搜索 ==="
+        find package -maxdepth 4 -name "Makefile" | xargs grep -l "libubox" 2>/dev/null | head -10
+        echo "=== dl 目录下 ==="
+        ls dl/ 2>/dev/null | grep -i ubox
+        echo "=== build_dir 下 ==="
+        find build_dir -maxdepth 3 -type d -name "*libubox*" 2>/dev/null
 
     - name: Compile Firmware(开始编译固件)
       id: compile
