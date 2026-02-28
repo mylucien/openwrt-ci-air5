@@ -406,10 +406,11 @@
 	label = "wan";
 };
 
-/* Disable unused peripherals */
+/* Disable WIFI */
 &wifi {
     status = "disabled";
-    qcom,ath11k-calibration-variant = "SoftBank-Air5";
+    nvmem-cells = <&cal_art_wifi0>, <&cal_art_wifi1>;
+    nvmem-cell-names = "calibration", "pre-calibration";
 };
 
 &pcie0 {
