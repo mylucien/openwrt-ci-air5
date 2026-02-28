@@ -151,14 +151,10 @@ jobs:
     - name: Check libubox location
       run: |
         cd $OPENWRT_PATH
-        echo "=== 所有包含 libubox 字样的目录 ==="
-        find . -type d -name "*libubox*" 2>/dev/null
-        echo "=== package 目录下搜索 ==="
-        find package -maxdepth 4 -name "Makefile" | xargs grep -l "libubox" 2>/dev/null | head -10
-        echo "=== dl 目录下 ==="
-        ls dl/ 2>/dev/null | grep -i ubox
-        echo "=== build_dir 下 ==="
-        find build_dir -maxdepth 3 -type d -name "*libubox*" 2>/dev/null
+        echo "=== package/libs/libubox 目录结构 ==="
+        ls -la package/libs/libubox/
+        echo "=== Makefile 内容 ==="
+        cat package/libs/libubox/Makefile
 
     - name: Compile Firmware(开始编译固件)
       id: compile
