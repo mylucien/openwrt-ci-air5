@@ -14,6 +14,7 @@ env:
   CONFIG_FILE: configs/softbank-air5.config
   GENERAL_CONFIG_FILE: configs/General.config
   DIY_SCRIPT: scripts/Roc-script.sh
+  2_SCRIPT: scripts/2-script.sh
   CLASH_KERNEL: amd64
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
@@ -147,6 +148,12 @@ jobs:
         cd $OPENWRT_PATH
         make defconfig
         make download -j$(nproc)
+        
+    - name: SCRIPT(加载自定义脚本)
+      run: |
+        chmod +x $2_SCRIPT
+        cd $OPENWRT_PATH
+        $GITHUB_WORKSPACE/$2_SCRIPT
 
     - name: Compile Firmware(开始编译固件)
       id: compile
