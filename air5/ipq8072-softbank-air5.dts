@@ -7,7 +7,7 @@
  *   - SoC: Qualcomm IPQ8072A (Quad-core Cortex-A53 @ 2.2GHz)
  *   - RAM: 512MB DDR3
  *   - Flash: W25R512NWEIQ 64MB SPI NOR (upgraded from 4MB)
- *   - Switch: QCA8075 (2x GbE LAN ports)
+ *   - Switch: QCA8075 (1x GbE LAN + 1x GbE WAN)
  *   - WLAN: QCN5024/QCN5054 (WiFi 6, ath11k)
  *   - 5G: Qualcomm SDX55 (X55) via PCIe
  */
@@ -357,8 +357,8 @@
 &switch {
 	status = "okay";
 
-	switch_lan_bmp = <0x06>; /* LAN1=Port1, LAN2=Port2 */
-	switch_wan_bmp = <0x00>; /* No dedicated WAN port */
+	switch_lan_bmp = <0x02>; /* LAN: Port1 (dp1) */
+	switch_wan_bmp = <0x04>; /* WAN: Port2 (dp2) */
 	switch_mac_mode = <0x00>; /* MAC mode for UNIPHY0 */
 	switch_mac_mode1 = <0xff>; /* Disabled */
 	switch_mac_mode2 = <0xff>; /* Disabled */
@@ -389,7 +389,7 @@
 &dp2 {
 	status = "okay";
 	phy-handle = <&qca8075_1>;
-	label = "lan2";
+	label = "wan";
 };
 
 /* Disable unused peripherals */
