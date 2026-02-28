@@ -134,16 +134,6 @@ jobs:
         cd $OPENWRT_PATH
         ./scripts/feeds update -a
         ./scripts/feeds install -a
-
-    - name: Fix gcc14 libubox format error
-      run: |
-        cd $OPENWRT_PATH
-        echo "=== 查找 libubox 相关文件 ==="
-        find . -name "*.txt" | grep -i libubox | head -20
-        echo "=== feeds 目录结构 ==="
-        ls feeds/ 2>/dev/null || echo "feeds 目录不存在"
-        echo "=== package/libs 目录 ==="
-        ls package/libs/ 2>/dev/null | head -20
   
     - name: Load Custom Configuration(加载自定义配置)
       run: |
@@ -157,6 +147,14 @@ jobs:
         cd $OPENWRT_PATH
         make defconfig
         make download -j$(nproc)
+
+    - name: Check libubox CMakeLists content
+      run: |
+        cd $OPENWRT_PATH
+        LIBUBOX_DIR=$(find feeds -type d -name "libubox" | head -1)
+        echo "dir: $LIBUBOX_DIR"
+        find feeds -maxdepth 3 -type d | grep -i ubox
+        ls "$LIBUBOX_DIR/" 2>/dev/null
 
     - name: Compile Firmware(开始编译固件)
       id: compile
