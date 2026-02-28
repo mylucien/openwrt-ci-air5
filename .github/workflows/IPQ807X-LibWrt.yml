@@ -138,9 +138,18 @@ jobs:
     - name: Fix gcc14 libubox format error
       run: |
         cd $OPENWRT_PATH
-        # 修改源码包中的 CMakeLists.txt
-        sed -i 's/-Werror=format-nonliteral//g' package/libs/libubox/CMakeLists.txt
-        # 同时清理可能已存在的 build_dir，强制重新解压
+        # 查找实际路径
+        LIBUBOX_CMAKE=$(find . -path "*/libubox/CMakeLists.txt" | head -1)
+        echo "Found: $LIBUBOX_CMAKE"
+        if [ -n "$LIBUBOX_CMAKE" ]; then
+          sed -i 's/-Werror=format-nonliteral//g' "$LIBUBOX_CMAKE"
+          echo "Fix applied to: $LIBUBOX_CMAKE"
+          grep "add_compile_options" "$LIBUBOX_CMAKE"
+        else
+          echo "ERROR: CMakeLists.txt not found!"
+          exit 1
+        fi
+        # 清理 build_dir 残留
         rm -rf build_dir/target-*/libubox-*
   
     - name: Load Custom Configuration(加载自定义配置)
