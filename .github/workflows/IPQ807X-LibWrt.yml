@@ -151,10 +151,8 @@ jobs:
     - name: Fix gcc14 libubox format error
       run: |
         cd $OPENWRT_PATH
-        echo "Applying gcc14 fix for libubox..."
-        sed -i '/^TARGET_CFLAGS/ s/$/ -Wno-error=format-nonliteral -Wno-format-nonliteral/' package/libs/libubox/Makefile || \
-        echo 'TARGET_CFLAGS += -Wno-error=format-nonliteral -Wno-format-nonliteral' >> package/libs/libubox/Makefile
-        echo "Patch done."
+        sed -i 's/-Werror=format-nonliteral//g' package/libs/libubox/CMakeLists.txt
+        sed -i 's/-Werror//g' package/libs/libubox/CMakeLists.txt
 
     - name: Compile Firmware(开始编译固件)
       id: compile
