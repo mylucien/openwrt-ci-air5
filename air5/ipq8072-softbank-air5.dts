@@ -24,9 +24,9 @@
 / {
 	model = "Qualcomm Technologies, Inc. IPQ807x/AP-HK09";
 	compatible = "qcom,ipq807x-hk09", "qcom,ipq8074";
-    qcom,msm-id = <0x156 0x00>;
-    qcom,board-id = <0x08 0x00>;
-    qcom,pmic-id = <0x00 0x00 0x00 0x00>;
+	qcom,msm-id = <0x156 0x00>;
+	qcom,board-id = <0x08 0x00>;
+	qcom,pmic-id = <0x00 0x00 0x00 0x00>;
 
 	aliases {
 		serial0 = &blsp1_uart5;
@@ -34,11 +34,10 @@
 		led-failsafe = &led_system;
 		led-running = &led_system;
 		led-upgrade = &led_system;
-		
+
 		/* Ethernet aliases */
 		ethernet0 = &dp1;
 		ethernet1 = &dp2;
-		label-mac-device = &dp1;
 	};
 
 	chosen {
@@ -306,25 +305,24 @@
 			};
 
 			partition@2a0000 {
-    			label = "0:art";
-    			reg = <0x2a0000 0x040000>;
-    			read-only;
+				label = "0:art";
+				reg = <0x2a0000 0x040000>;
+				read-only;
 
-    			nvmem-layout {
-        			compatible = "fixed-layout";
-        			#address-cells = <1>;
-        			#size-cells = <1>;
+				nvmem-layout {
+					compatible = "fixed-layout";
+					#address-cells = <1>;
+					#size-cells = <1>;
 
-        			cal_art_wifi0: cal@1000 {
-            			reg = <0x1000 0x24a6>;
-        			};
+					cal_art_wifi0: cal@1000 {
+						reg = <0x1000 0x24a6>;
+					};
 
-        			cal_art_wifi1: cal@35a6 {
-            			reg = <0x35a6 0x1ba5a>;
-        			};
-    			};
+					cal_art_wifi1: cal@35a6 {
+						reg = <0x35a6 0x1ba5a>;
+					};
+				};
 			};
-
 
 			partition@2e0000 {
 				label = "0:orgdata";
@@ -373,7 +371,7 @@
 	mdio-bus = <&mdio>;
 	switch_lan_bmp = <0x02>; /* LAN: Port1 (dp1) */
 	switch_wan_bmp = <0x04>; /* WAN: Port2 (dp2) */
-	switch_mac_mode = <0x00>; /* MAC mode for UNIPHY0 */
+	switch_mac_mode = <0x00>;
 	switch_mac_mode1 = <0xff>; /* Disabled */
 	switch_mac_mode2 = <0xff>; /* Disabled */
 
@@ -398,29 +396,31 @@
 	status = "okay";
 	phy-handle = <&qca8075_0>;
 	label = "lan1";
+	mac-address = [a8 98 92 2c f9 96];
 };
 
 &dp2 {
 	status = "okay";
 	phy-handle = <&qca8075_1>;
 	label = "wan";
+	mac-address = [a8 98 92 2c f9 97];
 };
 
-/* Disable WIFI */
 &wifi {
-    status = "disabled";
-    nvmem-cells = <&cal_art_wifi0>, <&cal_art_wifi1>;
-    nvmem-cell-names = "calibration", "pre-calibration";
+	status = "okay";
+	nvmem-cells = <&cal_art_wifi0>, <&cal_art_wifi1>;
+	nvmem-cell-names = "calibration", "pre-calibration";
+	mac-address = [a8 98 92 2c f9 98];
 };
 
 &pcie0 {
-    status = "okay";
-    perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>;
+	status = "okay";
+	perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>;
 };
 
 &pcie1 {
-    status = "okay";
-    perst-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
+	status = "okay";
+	perst-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
 };
 
 &ssphy_0 {
