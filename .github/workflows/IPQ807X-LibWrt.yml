@@ -148,11 +148,13 @@ jobs:
         make defconfig
         make download -j$(nproc)
         
-    - name: Fix gcc14 build issue
+    - name: Fix gcc14 libubox format error
       run: |
         cd $OPENWRT_PATH
-        sed -i 's/-Werror=format-nonliteral/-Wno-error=format-nonliteral/g' package/libs/libubox/CMakeLists.txt || true
-        sed -i 's/-Werror//g' package/libs/libubox/CMakeLists.txt || true
+        echo "Applying gcc14 fix for libubox..."
+        sed -i '/^TARGET_CFLAGS/ s/$/ -Wno-error=format-nonliteral -Wno-format-nonliteral/' package/libs/libubox/Makefile || \
+        echo 'TARGET_CFLAGS += -Wno-error=format-nonliteral -Wno-format-nonliteral' >> package/libs/libubox/Makefile
+        echo "Patch done."
 
     - name: Compile Firmware(开始编译固件)
       id: compile
