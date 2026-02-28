@@ -398,11 +398,13 @@
 };
 
 &pcie0 {
-	status = "okay";
+    status = "okay";
+    perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>;
 };
 
 &pcie1 {
-	status = "okay";
+    status = "okay";
+    perst-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
 };
 
 &ssphy_0 {
