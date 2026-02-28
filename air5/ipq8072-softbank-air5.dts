@@ -356,7 +356,7 @@
 
 &switch {
 	status = "okay";
-
+	mdio-bus = <&mdio>;
 	switch_lan_bmp = <0x02>; /* LAN: Port1 (dp1) */
 	switch_wan_bmp = <0x04>; /* WAN: Port2 (dp2) */
 	switch_mac_mode = <0x00>; /* MAC mode for UNIPHY0 */
