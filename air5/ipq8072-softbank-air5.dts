@@ -22,8 +22,11 @@
 #include <dt-bindings/leds/common.h>
 
 / {
-	model = "SoftBank Air 5";
-	compatible = "softbank,air5", "qcom,ipq8074";
+	model = "Qualcomm Technologies, Inc. IPQ807x/AP-HK09";
+	compatible = "qcom,ipq807x-hk09", "qcom,ipq8074";
+    qcom,msm-id = <0x156 0x00>;
+    qcom,board-id = <0x08 0x00>;
+    qcom,pmic-id = <0x00 0x00 0x00 0x00>;
 
 	aliases {
 		serial0 = &blsp1_uart5;
