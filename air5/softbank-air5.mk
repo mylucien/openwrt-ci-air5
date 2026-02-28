@@ -18,7 +18,7 @@ define Device/softbank_air5
   		kmod-usb-net-qmi-wwan kmod-usb-serial-option kmod-usb-serial-qualcomm \
   		uqmi umbim comgt comgt-ncm \
   		kmod-usb-net-cdc-mbim kmod-usb-net-cdc-ncm
-  KERNEL := kernel-bin | gzip | fit lzma $$(KDIR)/image-$$(DEVICE_DTS).dtb
+  KERNEL := kernel-bin | lzma | fit lzma $$(KDIR)/image-$$(DEVICE_DTS).dtb
   IMAGES := sysupgrade.bin factory.bin
   IMAGE/sysupgrade.bin := append-kernel | pad-to 128k | append-rootfs | pad-rootfs | append-metadata
   IMAGE/factory.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-rootfs | pad-rootfs
