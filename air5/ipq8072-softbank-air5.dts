@@ -306,9 +306,23 @@
 			};
 
 			partition@2a0000 {
-				label = "0:art";
-				reg = <0x2a0000 0x040000>;
-				read-only;
+    			label = "0:art";
+    			reg = <0x2a0000 0x040000>;
+    			read-only;
+
+    			nvmem-layout {
+        			compatible = "fixed-layout";
+        			#address-cells = <1>;
+        			#size-cells = <1>;
+
+        			cal_art_wifi0: cal@1000 {
+            			reg = <0x1000 0x24a6>;
+        			};
+
+        			cal_art_wifi1: cal@35a6 {
+            			reg = <0x35a6 0x1ba5a>;
+        			};
+    			};
 			};
 
 
