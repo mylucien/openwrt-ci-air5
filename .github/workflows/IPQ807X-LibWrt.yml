@@ -85,7 +85,7 @@ jobs:
         ls -lh $OPENWRT_PATH/.config
         echo ""
         echo "检查设备树:"
-        ls -lh $OPENWRT_PATH/target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/ipq8072-softbank-air5.dts
+        ls -lh $OPENWRT_PATH/target/linux/qualcommax/dts/ipq8072-softbank-air5.dts
         echo ""
         echo "检查设备定义在 ipq807x.mk 中:"
         grep -A 10 "Device/softbank_air5" $OPENWRT_PATH/target/linux/qualcommax/image/ipq807x.mk || echo "未找到设备定义！"
