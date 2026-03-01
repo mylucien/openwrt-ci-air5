@@ -1,5 +1,0 @@
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -1,6 +1,6 @@
--add_compile_options(-Wall -Werror -Wextra -Werror=implicit-function-declaration -Wformat -Werror=format-security -Werror=format-nonliteral)
-+add_compile_options(-Wall -Werror -Wextra -Werror=implicit-function-declaration -Wformat -Werror=format-security)
