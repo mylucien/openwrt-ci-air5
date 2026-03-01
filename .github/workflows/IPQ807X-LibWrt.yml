@@ -72,7 +72,7 @@ jobs:
 
         echo "========== 复制设备树文件 =========="
         cp $DTS_FILE \
-           $OPENWRT_PATH/target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/
+           $OPENWRT_PATH/target/linux/qualcommax/dts/
         echo "设备树文件已复制"
 
         echo "========== 追加设备定义到 ipq807x.mk =========="
