@@ -407,7 +407,7 @@
 };
 
 &wifi {
-	status = "disabled"; /* 关闭wifi */
+	status = "okay"; /* “disabled” 关闭wifi */
 	nvmem-cells = <&cal_art_wifi0>, <&cal_art_wifi1>;
 	nvmem-cell-names = "calibration", "pre-calibration";
 	mac-address = [a8 98 92 2c f9 98]; /* 填入你的实际MAC */
