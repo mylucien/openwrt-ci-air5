@@ -1,4 +1,4 @@
-name: IPQ807X-LibWrt
+name: SOFTBANK-AIR5-IPQ807X-LibWrt
 
 on:
   workflow_dispatch:
