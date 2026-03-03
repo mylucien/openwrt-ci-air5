@@ -69,6 +69,20 @@ jobs:
         echo "========== 复制配置文件 =========="
         cp $CONFIG_FILE $OPENWRT_PATH/.config
         echo "配置文件已复制"
+
+        echo "========== 补充设备树文件 =========="
+        cp AX6/ipq8071-ax6-stock.dts \
+           $OPENWRT_PATH/target/linux/qualcommax/dts/
+           
+        cp AX6/ipq8071-ax3600-stock.dts \
+           $OPENWRT_PATH/target/linux/qualcommax/dts/
+
+        cp AX6/ipq8071-mf269-stock.dts \
+           $OPENWRT_PATH/target/linux/qualcommax/dts/
+
+        cp AX6/ipq8072-ax9000-stock.dts \
+           $OPENWRT_PATH/target/linux/qualcommax/dts/
+        echo "设备树文件已补充"
     
         echo "========== 复制设备树文件 =========="
         cp $DTS_FILE \
