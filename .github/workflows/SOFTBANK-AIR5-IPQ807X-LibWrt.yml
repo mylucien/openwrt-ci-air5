@@ -7,8 +7,8 @@ on:
   #   - cron: 0 20 * * *
 
 env:
-  REPO_URL: https://github.com/LiBwrt/openwrt-6.x
-  REPO_BRANCH: main-nss
+  REPO_URL: https://github.com/immortalwrt/immortalwrt.git
+  REPO_BRANCH: master
   DTS_FILE: air5/ipq8072-softbank-air5.dts
   MK_FILE: air5/softbank-air5.mk
   CONFIG_FILE: configs/softbank-air5.config
