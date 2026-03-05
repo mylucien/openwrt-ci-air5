@@ -335,12 +335,12 @@
 
 			partition@400000 {
 				label = "kernel";
-				reg = <0x400000 0xc00000>;
+				reg = <0x400000 0x800000>;
 			};
 
 			partition@1000000 {
 				label = "rootfs";
-				reg = <0x1000000 0>;
+				reg = <0xC00000 0>;
 			};
 		};
 	};
