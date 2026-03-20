@@ -33,8 +33,8 @@
 		led-upgrade = &led_system;
 
 		/* Ethernet aliases */
-		ethernet0 = &dp1;
-		ethernet1 = &dp2;
+	    ethernet0 = &dp5;   /* 原来是&dp1 */
+	    ethernet1 = &dp6;   /* 原来是&dp2 */
 	};
 
 	chosen {
@@ -338,69 +338,66 @@
 				reg = <0x400000 0x800000>;
 			};
 
-			partition@1000000 {
-				label = "rootfs";
-				reg = <0xC00000 0>;
+			partition@c00000 {
+			    label = "rootfs";
+			    reg = <0xC00000 0x3400000>;  /* 12MB~64MB，共52MB */
 			};
 		};
 	};
 };
 
 &mdio {
-	status = "okay";
-	pinctrl-0 = <&mdio_pins>;
-	pinctrl-names = "default";
-	reset-gpios = <&tlmm 37 GPIO_ACTIVE_LOW>;
+    status = "okay";
+    pinctrl-0 = <&mdio_pins>;
+    pinctrl-names = "default";
+    reset-gpios = <&tlmm 37 GPIO_ACTIVE_LOW>;
 
-	qca8075_0: ethernet-phy@8 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <8>;
-	};
+    qca8337_0: ethernet-phy@18 {
+        compatible = "ethernet-phy-ieee802.3-c22";
+        reg = <0x18>;
+    };
 
-	qca8075_1: ethernet-phy@9 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <9>;
-	};
+    qca8337_1: ethernet-phy@1c {
+        compatible = "ethernet-phy-ieee802.3-c22";
+        reg = <0x1c>;
+    };
 };
 
 &switch {
-	status = "okay";
-	mdio-bus = <&mdio>;
-	switch_lan_bmp = <0x02>; /* LAN: Port1 (dp1) */
-	switch_wan_bmp = <0x04>; /* WAN: Port2 (dp2) */
-	switch_mac_mode = <0x00>;
-	switch_mac_mode1 = <0xff>; /* Disabled */
-	switch_mac_mode2 = <0xff>; /* Disabled */
+    status = "okay";
+    mdio-bus = <&mdio>;
+    switch_lan_bmp = <0x20>; /* port5 = dp5 = LAN */
+    switch_wan_bmp = <0x40>; /* port6 = dp6 = WAN */
+    switch_mac_mode = <0x00>;
+    switch_mac_mode1 = <0x0f>; /* SGMII+ for port5 */
+    switch_mac_mode2 = <0x0f>; /* SGMII+ for port6 */
 
-	qcom,port_phyinfo {
-		port@1 {
-			port_id = <1>;
-			phy_address = <8>;
-		};
-
-		port@2 {
-			port_id = <2>;
-			phy_address = <9>;
-		};
-	};
+    qcom,port_phyinfo {
+        port@5 {
+            port_id = <5>;
+            phy_address = <0x18>;
+            port_mac_sel = "QGMAC_PORT";
+        };
+        port@6 {
+            port_id = <6>;
+            phy_address = <0x1c>;
+            port_mac_sel = "QGMAC_PORT";
+        };
+    };
 };
 
-&edma {
-	status = "okay";
+&dp5 {
+    status = "okay";
+    phy-handle = <&qca8337_0>;
+    label = "lan";
+    mac-address = [a8 98 92 2c f9 96];
 };
 
-&dp1 {
-	status = "okay";
-	phy-handle = <&qca8075_0>;
-	label = "lan1";
-	mac-address = [a8 98 92 2c f9 96]; /* 填入你的实际MAC */
-};
-
-&dp2 {
-	status = "okay";
-	phy-handle = <&qca8075_1>;
-	label = "wan";
-	mac-address = [a8 98 92 2c f9 97]; /* 填入你的实际MAC */
+&dp6 {
+    status = "okay";
+    phy-handle = <&qca8337_1>;
+    label = "wan";
+    mac-address = [a8 98 92 2c f9 97];
 };
 
 &wifi {
