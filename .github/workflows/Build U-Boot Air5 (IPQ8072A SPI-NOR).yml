@@ -71,16 +71,21 @@ jobs:
           echo "--- common/Makefile tail ---"
           tail -5 uboot/common/Makefile
 
-      # 设置工具链环境变量（与 build.sh 完全一致）
+      # 设置工具链环境变量
       - name: Set toolchain env
         run: |
-          TOOLCHAIN=$(realpath uboot)/../staging_dir/toolchain-arm_cortex-a7_gcc-5.2.0_musl-1.1.16_eabi/bin
+          TOOLCHAIN="${{ github.workspace }}/../staging_dir/toolchain-arm_cortex-a7_gcc-5.2.0_musl-1.1.16_eabi/bin"
+          echo "TOOLCHAIN=${TOOLCHAIN}" >> $GITHUB_ENV
           echo "PATH=${TOOLCHAIN}:$PATH" >> $GITHUB_ENV
-          echo "ARCH=arm"                  >> $GITHUB_ENV
+          echo "ARCH=arm" >> $GITHUB_ENV
           echo "CROSS_COMPILE=arm-openwrt-linux-" >> $GITHUB_ENV
-          echo "STAGING_DIR=$(realpath uboot)/../staging_dir/" >> $GITHUB_ENV
-          echo "HOSTLDFLAGS=-L$(realpath uboot)/../staging_dir/usr/lib -znow -zrelro -pie" >> $GITHUB_ENV
-          echo "TARGETCC=arm-openwrt-linux-gcc" >> $GITHUB_ENV
+          echo "STAGING_DIR=${{ github.workspace }}/../staging_dir/" >> $GITHUB_ENV
+          # verify toolchain
+          ls -la "${TOOLCHAIN}/arm-openwrt-linux-gcc" || {
+            echo "TOOLCHAIN not found at ${TOOLCHAIN}"
+            find ${{ github.workspace }}/../staging_dir -name "arm-openwrt-linux-gcc" 2>/dev/null || echo "No toolchain gcc found!"
+            exit 1
+          }
 
       - name: Configure
         run: |
