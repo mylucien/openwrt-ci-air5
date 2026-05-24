@@ -1,0 +1,40 @@
+#!/bin/sh /etc/rc.common
+# Auto overlay on USB flash drive for Air5 initramfs boot
+# First boot: creates overlay.img on /dev/sda1
+# Subsequent: mounts it as root overlay (config persists on USB)
+
+START=11
+
+boot() {
+    echo "overlay-boot: waiting for USB..."
+    while [ ! -b /dev/sda1 ]; do
+        sleep 1
+    done
+
+    mount /dev/sda1 /mnt
+    if [ $? -ne 0 ]; then
+        echo "overlay-boot: failed to mount /dev/sda1"
+        return 1
+    fi
+
+    if [ ! -f /mnt/overlay.img ]; then
+        echo "overlay-boot: creating overlay image (256MB)..."
+        dd if=/dev/zero of=/mnt/overlay.img bs=1M count=256 2>/dev/null
+        mkfs.ext4 -F /mnt/overlay.img 2>/dev/null
+    fi
+
+    mkdir -p /overlay-upper /overlay-work
+    mount -o loop /mnt/overlay.img /overlay-upper
+    if [ $? -ne 0 ]; then
+        echo "overlay-boot: failed to mount overlay.img"
+        umount /mnt
+        return 1
+    fi
+
+    mount -t overlay overlay / \
+        -o "lowerdir=/rom,upperdir=/overlay-upper/upper,workdir=/overlay-upper/work" 2>/dev/null
+
+    if [ $? -eq 0 ]; then
+        echo "overlay-boot: root overlay mounted"
+    fi
+}
