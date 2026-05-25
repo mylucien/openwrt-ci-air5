@@ -20,8 +20,9 @@ define Device/softbank_air5
   		kmod-usb-net-cdc-mbim kmod-usb-net-cdc-ncm
   KERNEL := kernel-bin | lzma | fit lzma $$(KDIR)/image-$$(DEVICE_DTS).dtb $$(DEVICE_DTS_CONFIG)
   KERNEL_INITRAMFS := kernel-bin | lzma | fit lzma $$(KDIR)/image-$$(DEVICE_DTS).dtb $$(DEVICE_DTS_CONFIG)
-  IMAGES := sysupgrade.bin factory.bin
+  IMAGES := sysupgrade.bin factory.bin initramfs.itb
   IMAGE/sysupgrade.bin := append-kernel | pad-to 128k | append-rootfs | pad-rootfs | append-metadata
   IMAGE/factory.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-rootfs | pad-rootfs
+  IMAGE/initramfs.itb := kernel | append-dtb | fit lzma $$(KDIR)/image-$$(DEVICE_DTS).dtb $$(DEVICE_DTS_CONFIG) | pad-to 128k
 endef
 TARGET_DEVICES += softbank_air5
