@@ -61,7 +61,6 @@
 
 	chosen {
 		stdout-path = "serial0:115200n8";
-		bootargs = "console=ttyMSM0,115200n8 root=/dev/ram0 rw";
 	};
 
 	memory@40000000 {
@@ -208,16 +207,6 @@
 	status = "okay";
 	pinctrl-0 = <&mdio_pins>;
 	pinctrl-names = "default";
-
-	qca8081_24: ethernet-phy@18 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <0x18>;
-	};
-
-	qca8081_28: ethernet-phy@1c {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <0x1c>;
-	};
 };
 
 &switch {
