@@ -4,17 +4,17 @@
  * Hardware:
  *   - SoC: Qualcomm IPQ8072A (Quad-core Cortex-A53 @ 2.2GHz)
  *   - RAM: 512MB DDR3
- *   - Flash: W25R512NWEIQ 64MB SPI NOR (upgraded from 4MB)
+ *   - Flash: W25Q256FV 4MB SPI NOR (stock)
  *   - Switch: 2x QCA8081 2.5G PHY (port5 WAN, port6 LAN) via SGMII
  *   - WLAN: QCN5024 2.4G + QCN5054 5G (WiFi 6, ath11k)
  *   - 5G: Qualcomm SDX55 via PCIe0
- *   - UART: BLSP1 UART4 @ GPIO 7(TX) 8(RX), 115200n8 1.8V
+ *   - UART: BLSP1 UART5 @ GPIO 7(TX) 8(RX), 115200n8 1.8V
  *
  * GPIO map (from factory DTB):
  *   GPIO 0    LED (bt_rf1 blue)
  *   GPIO 3    LED (wifi blue)
- *   GPIO 7    UART TX (blsp1_uart4)
- *   GPIO 8    UART RX (blsp1_uart4)
+ *   GPIO 7    UART TX (blsp4_uart0)
+ *   GPIO 8    UART RX (blsp4_uart0)
  *   GPIO 11   LED (sim red)
  *   GPIO 14   LED (sim green)
  *   GPIO 16   LED (system/status green)
@@ -23,7 +23,7 @@
  *   GPIO 20   LED (rf3 blue)
  *   GPIO 25   PHY reset (NAPA)
  *   GPIO 27   USB mux (output-high)
- *   GPIO 37   PHY reset
+ *   GPIO 37   PHY reset (NAPA)
  *   GPIO 42   LED (4g red)
  *   GPIO 43   LED (4g green)
  *   GPIO 44   PHY reset (NAPA) + UART2 TX
@@ -34,16 +34,6 @@
  *   GPIO 64-66 BT coexistence
  *   GPIO 68   MDC
  *   GPIO 69   MDIO
- *
- * Flash layout (64MB W25R512NWEIQ):
- *   0x000000 - 0x1F0000  Boot chain     (SBL1/MIBIB/SEE/CDT/APPSBLENV)
- *   0x1F0000 - 0x200000  U-Boot env     (64KB, CONFIG_ENV_OFFSET)
- *   0x200000 - 0x2A0000  APPSBL (U-Boot) (640KB)
- *   0x2A0000 - 0x2E0000  ART            (256KB, WiFi cal)
- *   0x2E0000 - 0x400000  OEM + CRASH    (1.125MB)
- *   0x400000 - 0xC00000  kernel         (8MB, FIT: kernel+DTB)
- *   0xC00000 - 0x3C00000 rootfs         (48MB, squashfs)
- *   0x3C00000- 0x4000000 rootfs_data    (4MB, jffs2 overlay)
  */
 
 /dts-v1/;
@@ -71,7 +61,6 @@
 
 	chosen {
 		stdout-path = "serial0:115200n8";
-		bootargs = "console=ttyMSM0,115200n8 loglevel=4 rootwait";
 	};
 
 	memory@40000000 {
@@ -153,12 +142,6 @@
 			gpios = <&tlmm 51 GPIO_ACTIVE_LOW>;
 		};
 	};
-
-	/*
-	 * No GPIO buttons on this board.
-	 * The 3 physical buttons (Reset/WPS/WiFi) are hardwired to PMIC/WiFi chip,
-	 * not connected to SoC GPIOs. Verified from factory DTB — no gpio-keys node.
-	 */
 };
 
 &tlmm {
@@ -193,6 +176,14 @@
 		bias-pull-down;
 	};
 
+	phy_rst_pins: phy-rst-state {
+		pins = "gpio25", "gpio37", "gpio44";
+		function = "gpio";
+		drive-strength = <8>;
+		bias-pull-up;
+		output-high;
+	};
+
 	usb_mux_pins: usb-mux-state {
 		pins = "gpio27";
 		function = "gpio";
@@ -220,168 +211,21 @@
 	status = "okay";
 };
 
-&qpic_bam {
-	status = "okay";
-};
-
-&blsp1_spi1 {
-	status = "okay";
-	pinctrl-0 = <&spi_0_pins>;
-	pinctrl-names = "default";
-	cs-gpios = <0>;
-
-	flash@0 {
-		compatible = "jedec,spi-nor";
-		reg = <0>;
-		#address-cells = <1>;
-		#size-cells = <1>;
-		spi-max-frequency = <50000000>;
-
-		partitions {
-			compatible = "fixed-partitions";
-			#address-cells = <1>;
-			#size-cells = <1>;
-
-			partition@0 {
-				label = "0:sbl1";
-				reg = <0x000000 0x040000>;
-				read-only;
-			};
-
-			partition@40000 {
-				label = "0:mibib";
-				reg = <0x040000 0x010000>;
-				read-only;
-			};
-
-			partition@50000 {
-				label = "0:bootconfig";
-				reg = <0x050000 0x020000>;
-				read-only;
-			};
-
-			partition@70000 {
-				label = "0:bootconfig1";
-				reg = <0x070000 0x020000>;
-				read-only;
-			};
-
-			partition@90000 {
-				label = "0:qsee";
-				reg = <0x090000 0x080000>;
-				read-only;
-			};
-
-			partition@110000 {
-				label = "0:qsee_1";
-				reg = <0x110000 0x080000>;
-				read-only;
-			};
-
-			partition@190000 {
-				label = "0:devcfg";
-				reg = <0x190000 0x010000>;
-				read-only;
-			};
-
-			partition@1a0000 {
-				label = "0:devcfg_1";
-				reg = <0x1a0000 0x010000>;
-				read-only;
-			};
-
-			partition@1b0000 {
-				label = "0:evcfg";
-				reg = <0x1b0000 0x010000>;
-				read-only;
-			};
-
-			partition@1c0000 {
-				label = "0:rpm";
-				reg = <0x1c0000 0x020000>;
-				read-only;
-			};
-
-			partition@1e0000 {
-				label = "0:cdt";
-				reg = <0x1e0000 0x010000>;
-				read-only;
-			};
-
-			partition@1f0000 {
-				label = "0:appsblenv";
-				reg = <0x1f0000 0x010000>;
-			};
-
-			partition@200000 {
-				label = "0:appsbl";
-				reg = <0x200000 0x0a0000>;
-				read-only;
-			};
-
-			partition@2a0000 {
-				label = "0:art";
-				reg = <0x2a0000 0x040000>;
-				read-only;
-
-				nvmem-layout {
-					compatible = "fixed-layout";
-					#address-cells = <1>;
-					#size-cells = <1>;
-
-					cal_art_wifi0: cal@1000 {
-						reg = <0x1000 0x24a6>;
-					};
-
-					cal_art_wifi1: cal@35a6 {
-						reg = <0x35a6 0x1ba5a>;
-					};
-				};
-			};
-
-			partition@2e0000 {
-				label = "0:orgdata";
-				reg = <0x2e0000 0x010000>;
-				read-only;
-			};
-
-			partition@2f0000 {
-				label = "0:crashdump";
-				reg = <0x2f0000 0x110000>;
-				read-only;
-			};
-
-			partition@400000 {
-				label = "kernel";
-				reg = <0x400000 0x800000>;
-			};
-
-			partition@c00000 {
-				label = "rootfs";
-				reg = <0xc00000 0x3000000>;
-			};
-
-			partition@3c00000 {
-				label = "rootfs_data";
-				reg = <0x3c00000 0x400000>;
-			};
-		};
-	};
-};
-
 &mdio {
 	status = "okay";
 	pinctrl-0 = <&mdio_pins>;
 	pinctrl-names = "default";
-	reset-gpios = <&tlmm 37 GPIO_ACTIVE_LOW>;
+	reset-gpios = <&tlmm 25 GPIO_ACTIVE_LOW>,
+		      <&tlmm 37 GPIO_ACTIVE_LOW>,
+		      <&tlmm 44 GPIO_ACTIVE_LOW>;
+	reset-delay-us = <10000>;
+	reset-post-delay-us = <5000>;
 
-	/* Port 5 = QCA8081 2.5G PHY @ MDIO addr 24 (0x18) */
 	qca8081_24: ethernet-phy@18 {
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x18>;
 	};
 
-	/* Port 6 = QCA8081 2.5G PHY @ MDIO addr 28 (0x1c) */
 	qca8081_28: ethernet-phy@1c {
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x1c>;
@@ -390,12 +234,11 @@
 
 &switch {
 	status = "okay";
-	mdio-bus = <&mdio>;
-	switch_lan_bmp = <0x20>;  /* port5 = LAN */
-	switch_wan_bmp = <0x40>;  /* port6 = WAN */
+	switch_lan_bmp = <0x20>;
+	switch_wan_bmp = <0x40>;
 	switch_mac_mode = <0x00>;
-	switch_mac_mode1 = <0x0f>; /* SGMII+ for port5 */
-	switch_mac_mode2 = <0x0f>; /* SGMII+ for port6 */
+	switch_mac_mode1 = <0x0f>;
+	switch_mac_mode2 = <0x0f>;
 
 	qcom,port_phyinfo {
 		port@5 {
@@ -427,8 +270,6 @@
 
 &wifi {
 	status = "okay";
-	nvmem-cells = <&cal_art_wifi0>, <&cal_art_wifi1>;
-	nvmem-cell-names = "calibration", "pre-calibration";
 };
 
 &pcie0 {
@@ -463,8 +304,3 @@
 &usb_1 {
 	status = "okay";
 };
-
-/*
- * MAC addresses are hardcoded in factory firmware (ART partition empty).
- * Update these with your actual device MACs.
- */
