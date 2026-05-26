@@ -1,48 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-/*
- * Device: SoftBank Air 5 (IPQ8072A / AP-HK09)
- * Hardware:
- *   - SoC: Qualcomm IPQ8072A (Quad-core Cortex-A53 @ 2.2GHz)
- *   - RAM: 512MB DDR3
- *   - Flash: W25Q256FV 4MB SPI NOR (stock)
- *   - Switch: 2x QCA8081 2.5G PHY (port5 WAN, port6 LAN) via SGMII
- *   - WLAN: QCN5024 2.4G + QCN5054 5G (WiFi 6, ath11k)
- *   - 5G: Qualcomm SDX55 via PCIe0
- *   - UART: BLSP1 UART5 @ GPIO 7(TX) 8(RX), 115200n8 1.8V
- *
- * GPIO map (from factory DTB):
- *   GPIO 0    LED (bt_rf1 blue)
- *   GPIO 3    LED (wifi blue)
- *   GPIO 7    UART TX (blsp4_uart0)
- *   GPIO 8    UART RX (blsp4_uart0)
- *   GPIO 11   LED (sim red)
- *   GPIO 14   LED (sim green)
- *   GPIO 16   LED (system/status green)
- *   GPIO 18   LED (5g blue)
- *   GPIO 19   LED (rf2 blue)
- *   GPIO 20   LED (rf3 blue)
- *   GPIO 25   PHY reset (NAPA)
- *   GPIO 27   USB mux (output-high)
- *   GPIO 37   PHY reset (NAPA)
- *   GPIO 42   LED (4g red)
- *   GPIO 43   LED (4g green)
- *   GPIO 44   PHY reset (NAPA) + UART2 TX
- *   GPIO 45   UART2 RX
- *   GPIO 51   LED (rf red)
- *   GPIO 58   PCIe0 perst
- *   GPIO 61   PCIe1 perst
- *   GPIO 64-66 BT coexistence
- *   GPIO 68   MDC
- *   GPIO 69   MDIO
- */
-
 /dts-v1/;
-
 #include "ipq8074.dtsi"
 #include "ipq8074-hk-cpu.dtsi"
 #include "ipq8074-ess.dtsi"
 #include <dt-bindings/gpio/gpio.h>
-#include <dt-bindings/input/input.h>
 #include <dt-bindings/leds/common.h>
 
 / {
@@ -65,82 +26,29 @@
 
 	memory@40000000 {
 		device_type = "memory";
-		reg = <0x0 0x40000000 0x0 0x20000000>; /* 512MB */
+		reg = <0x0 0x40000000 0x0 0x20000000>;
 	};
 
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-0 = <&led_pins>;
 		pinctrl-names = "default";
-
 		led_system: system {
 			label = "green:system";
 			color = <LED_COLOR_ID_GREEN>;
 			function = LED_FUNCTION_STATUS;
 			gpios = <&tlmm 16 GPIO_ACTIVE_LOW>;
 		};
-
-		wifi {
-			label = "blue:wifi";
-			color = <LED_COLOR_ID_BLUE>;
-			function = LED_FUNCTION_WLAN;
-			gpios = <&tlmm 3 GPIO_ACTIVE_LOW>;
-			linux,default-trigger = "phy0tpt";
-		};
-
-		wwan_5g {
-			label = "blue:5g";
-			color = <LED_COLOR_ID_BLUE>;
-			gpios = <&tlmm 18 GPIO_ACTIVE_LOW>;
-		};
-
-		wwan_4g_red {
-			label = "red:4g";
-			color = <LED_COLOR_ID_RED>;
-			gpios = <&tlmm 42 GPIO_ACTIVE_LOW>;
-		};
-
-		wwan_4g_green {
-			label = "green:4g";
-			color = <LED_COLOR_ID_GREEN>;
-			gpios = <&tlmm 43 GPIO_ACTIVE_LOW>;
-		};
-
-		sim_red {
-			label = "red:sim";
-			color = <LED_COLOR_ID_RED>;
-			gpios = <&tlmm 11 GPIO_ACTIVE_LOW>;
-		};
-
-		sim_green {
-			label = "green:sim";
-			color = <LED_COLOR_ID_GREEN>;
-			gpios = <&tlmm 14 GPIO_ACTIVE_LOW>;
-		};
-
-		rf1_blue {
-			label = "blue:rf1";
-			color = <LED_COLOR_ID_BLUE>;
-			gpios = <&tlmm 0 GPIO_ACTIVE_LOW>;
-		};
-
-		rf2_blue {
-			label = "blue:rf2";
-			color = <LED_COLOR_ID_BLUE>;
-			gpios = <&tlmm 19 GPIO_ACTIVE_LOW>;
-		};
-
-		rf3_blue {
-			label = "blue:rf3";
-			color = <LED_COLOR_ID_BLUE>;
-			gpios = <&tlmm 20 GPIO_ACTIVE_LOW>;
-		};
-
-		rf_red {
-			label = "red:rf";
-			color = <LED_COLOR_ID_RED>;
-			gpios = <&tlmm 51 GPIO_ACTIVE_LOW>;
-		};
+		wifi { label = "blue:wifi"; color = <LED_COLOR_ID_BLUE>; function = LED_FUNCTION_WLAN; gpios = <&tlmm 3 GPIO_ACTIVE_LOW>; linux,default-trigger = "phy0tpt"; };
+		wwan_5g { label = "blue:5g"; color = <LED_COLOR_ID_BLUE>; gpios = <&tlmm 18 GPIO_ACTIVE_LOW>; };
+		wwan_4g_red { label = "red:4g"; color = <LED_COLOR_ID_RED>; gpios = <&tlmm 42 GPIO_ACTIVE_LOW>; };
+		wwan_4g_green { label = "green:4g"; color = <LED_COLOR_ID_GREEN>; gpios = <&tlmm 43 GPIO_ACTIVE_LOW>; };
+		sim_red { label = "red:sim"; color = <LED_COLOR_ID_RED>; gpios = <&tlmm 11 GPIO_ACTIVE_LOW>; };
+		sim_green { label = "green:sim"; color = <LED_COLOR_ID_GREEN>; gpios = <&tlmm 14 GPIO_ACTIVE_LOW>; };
+		rf1_blue { label = "blue:rf1"; color = <LED_COLOR_ID_BLUE>; gpios = <&tlmm 0 GPIO_ACTIVE_LOW>; };
+		rf2_blue { label = "blue:rf2"; color = <LED_COLOR_ID_BLUE>; gpios = <&tlmm 19 GPIO_ACTIVE_LOW>; };
+		rf3_blue { label = "blue:rf3"; color = <LED_COLOR_ID_BLUE>; gpios = <&tlmm 20 GPIO_ACTIVE_LOW>; };
+		rf_red { label = "red:rf"; color = <LED_COLOR_ID_RED>; gpios = <&tlmm 51 GPIO_ACTIVE_LOW>; };
 	};
 };
 
@@ -151,37 +59,19 @@
 		drive-strength = <8>;
 		bias-disable;
 	};
-
 	mdio_pins: mdio-state {
-		mdc-pins {
-			pins = "gpio68";
-			function = "mdc";
-			drive-strength = <8>;
-			bias-pull-up;
-		};
-		mdio-pins {
-			pins = "gpio69";
-			function = "mdio";
-			drive-strength = <8>;
-			bias-pull-up;
-		};
+		mdc-pins { pins = "gpio68"; function = "mdc"; drive-strength = <8>; bias-pull-up; };
+		mdio-pins { pins = "gpio69"; function = "mdio"; drive-strength = <8>; bias-pull-up; };
 	};
-
 	led_pins: led-state {
 		pins = "gpio0", "gpio3", "gpio11", "gpio14", "gpio16",
-		       "gpio18", "gpio19", "gpio20", "gpio42", "gpio43",
-		       "gpio51";
+		       "gpio18", "gpio19", "gpio20", "gpio42", "gpio43", "gpio51";
 		function = "gpio";
 		drive-strength = <2>;
 		bias-pull-down;
 	};
-
 	usb_mux_pins: usb-mux-state {
-		pins = "gpio27";
-		function = "gpio";
-		drive-strength = <8>;
-		bias-pull-down;
-		output-high;
+		pins = "gpio27"; function = "gpio"; drive-strength = <8>; bias-pull-down; output-high;
 	};
 };
 
@@ -191,17 +81,9 @@
 	pinctrl-names = "default";
 };
 
-&prng {
-	status = "okay";
-};
-
-&cryptobam {
-	status = "okay";
-};
-
-&crypto {
-	status = "okay";
-};
+&prng { status = "okay"; };
+&cryptobam { status = "okay"; };
+&crypto { status = "okay"; };
 
 &mdio {
 	status = "okay";
@@ -216,68 +98,30 @@
 	switch_mac_mode = <0x00>;
 	switch_mac_mode1 = <0x0f>;
 	switch_mac_mode2 = <0x0f>;
-
 	qcom,port_phyinfo {
-		port@5 {
-			port_id = <5>;
-			phy_address = <0x18>;
-			port_mac_sel = "QGMAC_PORT";
-		};
-		port@6 {
-			port_id = <6>;
-			phy_address = <0x1c>;
-			port_mac_sel = "QGMAC_PORT";
-		};
+		port@5 { port_id = <5>; phy_address = <0x18>; port_mac_sel = "QGMAC_PORT"; };
+		port@6 { port_id = <6>; phy_address = <0x1c>; port_mac_sel = "QGMAC_PORT"; };
 	};
 };
 
 &dp5 {
 	status = "okay";
-	phy-handle = <&qca8081_24>;
 	label = "lan";
 	mac-address = [a8 98 92 2c f9 96];
 };
 
 &dp6 {
 	status = "okay";
-	phy-handle = <&qca8081_28>;
 	label = "wan";
 	mac-address = [a8 98 92 2c f9 97];
 };
 
-&wifi {
-	status = "okay";
-};
-
-&pcie0 {
-	status = "okay";
-	perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>;
-};
-
-&pcie1 {
-	status = "disabled";
-};
-
-&ssphy_0 {
-	status = "okay";
-};
-
-&ssphy_1 {
-	status = "okay";
-};
-
-&qusb_phy_0 {
-	status = "okay";
-};
-
-&qusb_phy_1 {
-	status = "okay";
-};
-
-&usb_0 {
-	status = "okay";
-};
-
-&usb_1 {
-	status = "okay";
-};
+&wifi { status = "okay"; };
+&pcie0 { status = "okay"; perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>; };
+&pcie1 { status = "disabled"; };
+&ssphy_0 { status = "okay"; };
+&ssphy_1 { status = "okay"; };
+&qusb_phy_0 { status = "okay"; };
+&qusb_phy_1 { status = "okay"; };
+&usb_0 { status = "okay"; };
+&usb_1 { status = "okay"; };
