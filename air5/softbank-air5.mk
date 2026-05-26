@@ -1,8 +1,4 @@
 # SPDX-License-Identifier: GPL-2.0-only
-#
-# Copyright (C) 2025 OpenWrt.org
-#
-
 define Device/softbank_air5
   $(call Device/FitImageLzma)
   DEVICE_VENDOR := SoftBank
@@ -20,9 +16,8 @@ define Device/softbank_air5
   		kmod-usb-net-cdc-mbim kmod-usb-net-cdc-ncm
   KERNEL := kernel-bin | lzma | fit lzma $$(KDIR)/image-$$(DEVICE_DTS).dtb $$(DEVICE_DTS_CONFIG)
   KERNEL_INITRAMFS := kernel-bin | lzma | fit lzma $$(KDIR)/image-$$(DEVICE_DTS).dtb $$(DEVICE_DTS_CONFIG)
-  IMAGES := sysupgrade.bin factory.bin initramfs.itb
+  IMAGES := sysupgrade.bin factory.bin
   IMAGE/sysupgrade.bin := append-kernel | pad-to 128k | append-rootfs | pad-rootfs | append-metadata
   IMAGE/factory.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-rootfs | pad-rootfs
-  IMAGE/initramfs.itb := kernel | append-dtb | fit lzma $$(KDIR)/image-$$(DEVICE_DTS).dtb $$(DEVICE_DTS_CONFIG) | pad-to 128k
 endef
 TARGET_DEVICES += softbank_air5
