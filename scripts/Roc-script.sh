@@ -21,11 +21,6 @@ function git_sparse_clone() {
   cd .. && rm -rf $repodir
 }
 
-# ariang & Go & frp & WolPlus & Argon & Aurora & OpenList & Lucky & wechatpush & OpenAppFilter & 集客无线AC控制器 & 雅典娜LED控制
-git_sparse_clone ariang https://github.com/laipeng668/packages net/ariang
-git_sparse_clone master https://github.com/laipeng668/packages lang/golang
-mv -f package/golang feeds/packages/lang/golang
-
 ### PassWall & OpenClash ###
 
 # 移除 OpenWrt Feeds 自带的核心库
