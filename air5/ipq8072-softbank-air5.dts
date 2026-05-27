@@ -34,21 +34,31 @@
 		pinctrl-0 = <&led_pins>;
 		pinctrl-names = "default";
 		led_system: system {
-			label = "green:system";
-			color = <LED_COLOR_ID_GREEN>;
+			label = "green:system"; color = <LED_COLOR_ID_GREEN>;
 			function = LED_FUNCTION_STATUS;
 			gpios = <&tlmm 16 GPIO_ACTIVE_LOW>;
 		};
-		wifi { label = "blue:wifi"; color = <LED_COLOR_ID_BLUE>; function = LED_FUNCTION_WLAN; gpios = <&tlmm 3 GPIO_ACTIVE_LOW>; linux,default-trigger = "phy0tpt"; };
-		wwan_5g { label = "blue:5g"; color = <LED_COLOR_ID_BLUE>; gpios = <&tlmm 18 GPIO_ACTIVE_LOW>; };
-		wwan_4g_red { label = "red:4g"; color = <LED_COLOR_ID_RED>; gpios = <&tlmm 42 GPIO_ACTIVE_LOW>; };
-		wwan_4g_green { label = "green:4g"; color = <LED_COLOR_ID_GREEN>; gpios = <&tlmm 43 GPIO_ACTIVE_LOW>; };
-		sim_red { label = "red:sim"; color = <LED_COLOR_ID_RED>; gpios = <&tlmm 11 GPIO_ACTIVE_LOW>; };
-		sim_green { label = "green:sim"; color = <LED_COLOR_ID_GREEN>; gpios = <&tlmm 14 GPIO_ACTIVE_LOW>; };
-		rf1_blue { label = "blue:rf1"; color = <LED_COLOR_ID_BLUE>; gpios = <&tlmm 0 GPIO_ACTIVE_LOW>; };
-		rf2_blue { label = "blue:rf2"; color = <LED_COLOR_ID_BLUE>; gpios = <&tlmm 19 GPIO_ACTIVE_LOW>; };
-		rf3_blue { label = "blue:rf3"; color = <LED_COLOR_ID_BLUE>; gpios = <&tlmm 20 GPIO_ACTIVE_LOW>; };
-		rf_red { label = "red:rf"; color = <LED_COLOR_ID_RED>; gpios = <&tlmm 51 GPIO_ACTIVE_LOW>; };
+		wifi { label = "blue:wifi"; color = <LED_COLOR_ID_BLUE>;
+			function = LED_FUNCTION_WLAN; gpios = <&tlmm 3 GPIO_ACTIVE_LOW>;
+			linux,default-trigger = "phy0tpt"; };
+		wwan_5g { label = "blue:5g"; color = <LED_COLOR_ID_BLUE>;
+			gpios = <&tlmm 18 GPIO_ACTIVE_LOW>; };
+		wwan_4g_red { label = "red:4g"; color = <LED_COLOR_ID_RED>;
+			gpios = <&tlmm 42 GPIO_ACTIVE_LOW>; };
+		wwan_4g_green { label = "green:4g"; color = <LED_COLOR_ID_GREEN>;
+			gpios = <&tlmm 43 GPIO_ACTIVE_LOW>; };
+		sim_red { label = "red:sim"; color = <LED_COLOR_ID_RED>;
+			gpios = <&tlmm 11 GPIO_ACTIVE_LOW>; };
+		sim_green { label = "green:sim"; color = <LED_COLOR_ID_GREEN>;
+			gpios = <&tlmm 14 GPIO_ACTIVE_LOW>; };
+		rf1_blue { label = "blue:rf1"; color = <LED_COLOR_ID_BLUE>;
+			gpios = <&tlmm 0 GPIO_ACTIVE_LOW>; };
+		rf2_blue { label = "blue:rf2"; color = <LED_COLOR_ID_BLUE>;
+			gpios = <&tlmm 19 GPIO_ACTIVE_LOW>; };
+		rf3_blue { label = "blue:rf3"; color = <LED_COLOR_ID_BLUE>;
+			gpios = <&tlmm 20 GPIO_ACTIVE_LOW>; };
+		rf_red { label = "red:rf"; color = <LED_COLOR_ID_RED>;
+			gpios = <&tlmm 51 GPIO_ACTIVE_LOW>; };
 	};
 };
 
@@ -56,8 +66,7 @@
 	uart_pins: uart-state {
 		pins = "gpio7", "gpio8";
 		function = "blsp4_uart0";
-		drive-strength = <8>;
-		bias-disable;
+		drive-strength = <8>; bias-disable;
 	};
 	mdio_pins: mdio-state {
 		mdc-pins { pins = "gpio68"; function = "mdc"; drive-strength = <8>; bias-pull-up; };
@@ -66,12 +75,11 @@
 	led_pins: led-state {
 		pins = "gpio0", "gpio3", "gpio11", "gpio14", "gpio16",
 		       "gpio18", "gpio19", "gpio20", "gpio42", "gpio43", "gpio51";
-		function = "gpio";
-		drive-strength = <2>;
-		bias-pull-down;
+		function = "gpio"; drive-strength = <2>; bias-pull-down;
 	};
 	usb_mux_pins: usb-mux-state {
-		pins = "gpio27"; function = "gpio"; drive-strength = <8>; bias-pull-down; output-high;
+		pins = "gpio27"; function = "gpio"; drive-strength = <8>;
+		bias-pull-down; output-high;
 	};
 };
 
@@ -84,6 +92,37 @@
 &prng { status = "okay"; };
 &cryptobam { status = "okay"; };
 &crypto { status = "okay"; };
+
+&blsp1_spi1 {
+	status = "okay";
+	pinctrl-0 = <&spi_0_pins>;
+	pinctrl-names = "default";
+	cs-gpios = <0>;
+
+	flash@0 {
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		spi-max-frequency = <50000000>;
+
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			partition@400000 {
+				label = "kernel";
+				reg = <0x400000 0x800000>;
+			};
+
+			partition@c00000 {
+				label = "rootfs";
+				reg = <0xc00000 0x3400000>;
+			};
+		};
+	};
+};
 
 &mdio {
 	status = "okay";
@@ -106,14 +145,12 @@
 
 &dp5 {
 	status = "okay";
-	label = "lan";
-	mac-address = [a8 98 92 2c f9 96];
+	label = "lan"; mac-address = [a8 98 92 2c f9 96];
 };
 
 &dp6 {
 	status = "okay";
-	label = "wan";
-	mac-address = [a8 98 92 2c f9 97];
+	label = "wan"; mac-address = [a8 98 92 2c f9 97];
 };
 
 &wifi { status = "okay"; };
