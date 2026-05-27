@@ -81,6 +81,11 @@
 		pins = "gpio27"; function = "gpio"; drive-strength = <8>;
 		bias-pull-down; output-high;
 	};
+
+	pcie0_pins: pcie0-state {
+		pins = "gpio58"; function = "gpio"; drive-strength = <8>;
+		bias-pull-down; output-high;
+	};
 };
 
 &blsp1_uart5 {
@@ -176,9 +181,14 @@
 &wifi {
 	status = "okay";
 	nvmem-cells = <&cal_art_wifi0>, <&cal_art_wifi1>;
-	nvmem-cell-names = "pre-calibration", "calibration";
+	nvmem-cell-names = "calibration", "pre-calibration";
 };
-&pcie0 { status = "okay"; perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>; };
+
+&pcie0 {
+	status = "okay";
+	perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>;
+};
+
 &pcie1 { status = "disabled"; };
 &ssphy_0 { status = "okay"; };
 &ssphy_1 { status = "okay"; };
