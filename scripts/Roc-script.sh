@@ -43,3 +43,7 @@ git clone --depth=1 https://github.com/vernesong/OpenClash package/luci-app-open
 echo "baidu.com"  > package/luci-app-passwall/luci-app-passwall/root/usr/share/passwall/rules/chnlist
 
 rm -rf feeds/packages/net/onionshare-cli
+
+# 处理gcc14 + fortify + Werror 的兼容性问题
+sed -i 's/-Werror=format-nonliteral/-Wno-error=format-nonliteral/g' package/libs/libubox/CMakeLists.txt 2>/dev/null || true
+sed -i 's/-Werror/-Wno-error/g' package/libs/libubox/CMakeLists.txt 2>/dev/null || true
