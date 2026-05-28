@@ -16,8 +16,8 @@
 		led-failsafe = &led_system;
 		led-running = &led_system;
 		led-upgrade = &led_system;
-		ethernet0 = &dp5;
-		ethernet1 = &dp6;
+		ethernet0 = &dp1;
+		ethernet1 = &dp5;
 	};
 
 	chosen {
@@ -81,19 +81,9 @@
 		pins = "gpio27"; function = "gpio"; drive-strength = <8>;
 		bias-pull-down; output-high;
 	};
-
-	pcie0_pins: pcie0-state {
-		pins = "gpio58"; function = "gpio"; drive-strength = <8>;
-		bias-pull-down; output-high;
-	};
 };
 
-&blsp1_uart5 {
-	status = "okay";
-	pinctrl-0 = <&uart_pins>;
-	pinctrl-names = "default";
-};
-
+&blsp1_uart5 { status = "okay"; pinctrl-0 = <&uart_pins>; pinctrl-names = "default"; };
 &prng { status = "okay"; };
 &cryptobam { status = "okay"; };
 &crypto { status = "okay"; };
@@ -103,79 +93,51 @@
 	pinctrl-0 = <&spi_0_pins>;
 	pinctrl-names = "default";
 	cs-gpios = <0>;
-
 	flash@0 {
 		compatible = "jedec,spi-nor";
 		reg = <0>;
 		#address-cells = <1>;
 		#size-cells = <1>;
 		spi-max-frequency = <50000000>;
-
 		partitions {
 			compatible = "fixed-partitions";
 			#address-cells = <1>;
 			#size-cells = <1>;
-
 			partition@2a0000 {
 				label = "0:art";
 				reg = <0x2a0000 0x40000>;
 				read-only;
-
 				nvmem-layout {
 					compatible = "fixed-layout";
 					#address-cells = <1>;
 					#size-cells = <1>;
-
-					cal_art_wifi0: cal@1000 {
-						reg = <0x1000 0x24a6>;
-					};
-
-					cal_art_wifi1: cal@35a6 {
-						reg = <0x35a6 0x1ba5a>;
-					};
+					cal_art_wifi0: cal@1000 { reg = <0x1000 0x24a6>; };
+					cal_art_wifi1: cal@35a6 { reg = <0x35a6 0x1ba5a>; };
 				};
 			};
-
-			partition@400000 {
-				label = "kernel";
-				reg = <0x400000 0x800000>;
-			};
-
-			partition@c00000 {
-				label = "rootfs";
-				reg = <0xc00000 0x3400000>;
-			};
+			partition@400000 { label = "kernel"; reg = <0x400000 0x800000>; };
+			partition@c00000 { label = "rootfs"; reg = <0xc00000 0x3400000>; };
 		};
 	};
 };
 
-&mdio {
-	status = "okay";
-	pinctrl-0 = <&mdio_pins>;
-	pinctrl-names = "default";
-};
+&mdio { status = "okay"; pinctrl-0 = <&mdio_pins>; pinctrl-names = "default"; };
 
 &switch {
 	status = "okay";
-	switch_lan_bmp = <0x20>;
-	switch_wan_bmp = <0x40>;
+	switch_lan_bmp = <0x02>;   /* port1 = LAN  (QCA8075 1G) */
+	switch_wan_bmp = <0x20>;   /* port5 = WAN  (QCA8081 2.5G) */
 	switch_mac_mode = <0x00>;
 	switch_mac_mode1 = <0x0f>;
 	switch_mac_mode2 = <0x0f>;
 	qcom,port_phyinfo {
+		port@1 { port_id = <1>; phy_address = <8>; };
+		port@2 { port_id = <2>; phy_address = <9>; };
+		port@3 { port_id = <3>; phy_address = <2>; };
+		port@4 { port_id = <4>; phy_address = <3>; };
 		port@5 { port_id = <5>; phy_address = <0x18>; port_mac_sel = "QGMAC_PORT"; };
 		port@6 { port_id = <6>; phy_address = <0x1c>; port_mac_sel = "QGMAC_PORT"; };
 	};
-};
-
-&dp5 {
-	status = "okay";
-	label = "lan"; mac-address = [a8 98 92 2c f9 96];
-};
-
-&dp6 {
-	status = "okay";
-	label = "wan"; mac-address = [a8 98 92 2c f9 97];
 };
 
 &wifi {
@@ -184,11 +146,7 @@
 	nvmem-cell-names = "calibration", "pre-calibration";
 };
 
-&pcie0 {
-	status = "okay";
-	perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>;
-};
-
+&pcie0 { status = "okay"; perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>; };
 &pcie1 { status = "disabled"; };
 &ssphy_0 { status = "okay"; };
 &ssphy_1 { status = "okay"; };
