@@ -143,7 +143,7 @@
 /* Watchdog 配置 - 防止频繁触发 */
 &soc {
 	watchdog@b017000 {
-		compatible = "qcom,kpss-timer", "qcom,kpss-wdt-ipq8074";
+		compatible = "qcom,kpss-timer", "qcom,kpss-wdt";
 		reg = <0xb017000 0x1000>;
 		clocks = <&sleep_clk>;
 		clock-names = "kpss";
