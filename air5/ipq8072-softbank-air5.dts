@@ -75,7 +75,7 @@
 	led_pins: led-state {
 		pins = "gpio0", "gpio3", "gpio11", "gpio14", "gpio16",
 		       "gpio18", "gpio19", "gpio20", "gpio42", "gpio43", "gpio51";
-		function = "gpio"; drive-strength = <2>; bias-pull-down;
+		function = "gpio"; drive-strength = <2>; output-high; bias-pull-down;
 	};
 	usb_mux_pins: usb-mux-state {
 		pins = "gpio27"; function = "gpio"; drive-strength = <8>;
