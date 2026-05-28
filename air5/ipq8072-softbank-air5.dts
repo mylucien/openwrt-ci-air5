@@ -140,6 +140,18 @@
 	};
 };
 
+/* Watchdog 配置 - 防止频繁触发 */
+&soc {
+	watchdog@b017000 {
+		compatible = "qcom,kpss-timer", "qcom,kpss-wdt-ipq8074";
+		reg = <0xb017000 0x1000>;
+		clocks = <&sleep_clk>;
+		clock-names = "kpss";
+		status = "okay";
+		timeout-sec = <120>;
+	};
+};
+
 &wifi {
 	status = "okay";
 	nvmem-cells = <&cal_art_wifi0>, <&cal_art_wifi1>;
