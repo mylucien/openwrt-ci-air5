@@ -20,9 +20,7 @@
 		ethernet1 = &dp5;
 	};
 
-	chosen {
-		stdout-path = "serial0:115200n8";
-	};
+	chosen { stdout-path = "serial0:115200n8"; };
 
 	memory@40000000 {
 		device_type = "memory";
@@ -33,14 +31,19 @@
 		compatible = "gpio-leds";
 		pinctrl-0 = <&led_pins>;
 		pinctrl-names = "default";
+
 		led_system: system {
 			label = "green:system"; color = <LED_COLOR_ID_GREEN>;
 			function = LED_FUNCTION_STATUS;
 			gpios = <&tlmm 16 GPIO_ACTIVE_LOW>;
+			linux,default-trigger = "heartbeat";
 		};
-		wifi { label = "blue:wifi"; color = <LED_COLOR_ID_BLUE>;
-			function = LED_FUNCTION_WLAN; gpios = <&tlmm 3 GPIO_ACTIVE_LOW>;
-			linux,default-trigger = "phy0tpt"; };
+		wifi {
+			label = "blue:wifi"; color = <LED_COLOR_ID_BLUE>;
+			function = LED_FUNCTION_WLAN;
+			gpios = <&tlmm 3 GPIO_ACTIVE_LOW>;
+			linux,default-trigger = "phy0tpt";
+		};
 		wwan_5g { label = "blue:5g"; color = <LED_COLOR_ID_BLUE>;
 			gpios = <&tlmm 18 GPIO_ACTIVE_LOW>; };
 		wwan_4g_red { label = "red:4g"; color = <LED_COLOR_ID_RED>;
@@ -75,7 +78,7 @@
 	led_pins: led-state {
 		pins = "gpio0", "gpio3", "gpio11", "gpio14", "gpio16",
 		       "gpio18", "gpio19", "gpio20", "gpio42", "gpio43", "gpio51";
-		function = "gpio"; drive-strength = <2>; output-high; bias-pull-down;
+		function = "gpio"; drive-strength = <2>; bias-pull-down;
 	};
 	usb_mux_pins: usb-mux-state {
 		pins = "gpio27"; function = "gpio"; drive-strength = <8>;
@@ -125,11 +128,8 @@
 
 &switch {
 	status = "okay";
-	switch_lan_bmp = <0x02>;   /* port1 = LAN  (QCA8075 1G) */
-	switch_wan_bmp = <0x20>;   /* port5 = WAN  (QCA8081 2.5G) */
-	switch_mac_mode = <0x00>;
-	switch_mac_mode1 = <0x0f>;
-	switch_mac_mode2 = <0x0f>;
+	switch_lan_bmp = <0x02>; switch_wan_bmp = <0x20>;
+	switch_mac_mode = <0x00>; switch_mac_mode1 = <0x0f>; switch_mac_mode2 = <0x0f>;
 	qcom,port_phyinfo {
 		port@1 { port_id = <1>; phy_address = <8>; };
 		port@2 { port_id = <2>; phy_address = <9>; };
@@ -140,7 +140,6 @@
 	};
 };
 
-/* Watchdog 配置 - 防止频繁触发 */
 &soc {
 	watchdog@b017000 {
 		compatible = "qcom,kpss-timer", "qcom,kpss-wdt";
