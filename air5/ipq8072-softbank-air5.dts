@@ -107,6 +107,13 @@
 				label = "0:art";
 				reg = <0x2a0000 0x40000>;
 				read-only;
+				nvmem-layout {
+					compatible = "fixed-layout";
+					#address-cells = <1>;
+					#size-cells = <1>;
+					cal_art_wifi0: cal@11000 { reg = <0x11000 0x3200>; };
+					cal_art_wifi1: cal@16000 { reg = <0x16000 0x2000>; };
+				};
 			};
 			partition@400000 { label = "kernel"; reg = <0x400000 0x800000>; };
 			partition@c00000 { label = "rootfs"; reg = <0xc00000 0x3400000>; };
@@ -147,6 +154,8 @@
 
 &wifi {
 	status = "okay";
+	nvmem-cells = <&cal_art_wifi0>, <&cal_art_wifi1>;
+	nvmem-cell-names = "calibration", "pre-calibration";
 };
 
 &pcie0 { status = "okay"; perst-gpios = <&tlmm 58 GPIO_ACTIVE_LOW>; };
