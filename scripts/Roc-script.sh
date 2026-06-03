@@ -37,4 +37,4 @@ sed -i 's/-Werror=format-nonliteral/-Wno-error=format-nonliteral/g' package/libs
 sed -i 's/-Werror/-Wno-error/g' package/libs/libubox/CMakeLists.txt 2>/dev/null || true
 
 # 应用watchdog compatible补丁
-patch -p1 < $GITHUB_WORKSPACE/patches/0001-watchdog-qcom-add-ipq807x-compatible.patch
+cp $GITHUB_WORKSPACE/patches/0001-watchdog-qcom-add-ipq807x-compatible.patch $OPENWRT_PATH/target/linux/qualcommax/patches-6.12/
