@@ -35,3 +35,7 @@ rm -rf feeds/packages/net/onionshare-cli
 # 处理gcc14 + fortify + Werror 的兼容性问题
 sed -i 's/-Werror=format-nonliteral/-Wno-error=format-nonliteral/g' package/libs/libubox/CMakeLists.txt 2>/dev/null || true
 sed -i 's/-Werror/-Wno-error/g' package/libs/libubox/CMakeLists.txt 2>/dev/null || true
+
+# 给qcom-wdt.c加ipq807x兼容
+sed -i '/{ .compatible = "qcom,kpss-wdt"/a\\t{ .compatible = "qcom,kpss-wdt-ipq807x", .data = \&match_data_kpss },' \
+    $(find . -path "*/watchdog/qcom-wdt.c")
