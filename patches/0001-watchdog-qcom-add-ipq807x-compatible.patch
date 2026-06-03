@@ -1,9 +1,0 @@
---- a/drivers/watchdog/qcom-wdt.c
-+++ b/drivers/watchdog/qcom-wdt.c
-@@ -261,6 +261,7 @@ static const struct of_device_id qcom_wdt_of_table[] = {
- 	{ .compatible = "qcom,scss-timer", .data = &match_data_apcs_tmr },
- 	{ .compatible = "qcom,kpss-wdt", .data = &match_data_kpss },
- 	{ .compatible = "qcom,kpss-wdt-ipq807x", .data = &match_data_kpss },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, qcom_wdt_of_table);
