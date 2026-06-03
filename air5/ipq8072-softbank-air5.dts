@@ -146,13 +146,13 @@
 };
 
 &soc {
-    watchdog@b017000 {
-        compatible = "qcom,kpss-wdt";
-        reg = <0xb017000 0x1000>;
-        clocks = <&sleep_clk>;
-        timeout-sec = <60>;
-        status = "okay";
-    };
+	watchdog@b017000 {
+	    compatible = "qcom,kpss-wdt-ipq807x", "qcom,kpss-wdt";
+	    reg = <0xb017000 0x1000>;
+	    clocks = <&sleep_clk>;
+	    timeout-sec = <32>;
+	    status = "okay";
+	};
 };
 
 &wifi {
