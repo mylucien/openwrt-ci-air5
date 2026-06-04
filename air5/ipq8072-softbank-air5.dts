@@ -308,11 +308,7 @@
 	};
 };
 
-&wifi {
-	status = "okay";
-	nvmem-cells = <&cal_art_wifi0>, <&cal_art_wifi1>;
-	nvmem-cell-names = "calibration", "pre-calibration";
-};
+&wifi { status = "disabled"; };
 
 &pcie0 {
 	status = "okay";
