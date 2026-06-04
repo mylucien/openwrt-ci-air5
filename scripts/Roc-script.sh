@@ -35,16 +35,3 @@ rm -rf feeds/packages/net/onionshare-cli
 # 处理gcc14 + fortify + Werror 的兼容性问题
 sed -i 's/-Werror=format-nonliteral/-Wno-error=format-nonliteral/g' package/libs/libubox/CMakeLists.txt 2>/dev/null || true
 sed -i 's/-Werror/-Wno-error/g' package/libs/libubox/CMakeLists.txt 2>/dev/null || true
-
-# WDT: 加ipq807x兼容字符串（kernel patch）
-cat > $OPENWRT_PATH/target/linux/qualcommax/patches-6.12/0001-watchdog-qcom-add-ipq807x-compatible.patch << 'EOF'
---- a/drivers/watchdog/qcom-wdt.c
-+++ b/drivers/watchdog/qcom-wdt.c
-@@ -261,6 +261,7 @@
- 	{ .compatible = "qcom,scss-timer", .data = &match_data_apcs_tmr },
- 	{ .compatible = "qcom,kpss-wdt", .data = &match_data_kpss },
-+	{ .compatible = "qcom,kpss-wdt-ipq807x", .data = &match_data_kpss },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, qcom_wdt_of_table);
-EOF
